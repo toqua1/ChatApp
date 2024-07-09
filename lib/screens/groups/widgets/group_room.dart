@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
-
 import 'group_message_card.dart';
 
 class GroupRoom extends StatefulWidget {
@@ -36,7 +35,7 @@ class _GroupRoomState extends State<GroupRoom> {
                 children: [
                   const CircleAvatar(
                     radius: 20,
-                   child: Text("G"),
+                    child: Text("G"),
                     // backgroundImage: AssetImage("assetsEdited/toqua5.jpg"),
                   ),
                   const SizedBox(
