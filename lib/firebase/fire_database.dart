@@ -1,15 +1,14 @@
-import 'package:chatapp/helper/snackBar.dart';
+import 'package:chatapp/models/group_model.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import '../models/room_model.dart';
 import 'package:uuid/uuid.dart';
+import '../models/chat_room_model.dart';
 
 class FireData {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  String now =DateTime.now().millisecondsSinceEpoch.toString() ; /*not const
+  as it always changes */
   final String myUid = FirebaseAuth.instance.currentUser!.uid;
 
   createRoom(String email) async {
@@ -52,10 +51,42 @@ class FireData {
     // }
   }
 
+  Future createGroup(String name , List members) async {
+    String gId =const Uuid().v1();
+    members.add(myUid);
+    GroupChat groupRoom = GroupChat(
+        id: gId,
+        name: name,
+        image: '',
+        admin: [myUid],
+        members: members,
+        createdAt: now,
+        lastMessage: '',
+        lastMessageTime: now,
+        );
+    await firestore.collection('groups').doc(gId).set(groupRoom.toJson());
+  }
+
+  Future addContact(String email) async {
+    QuerySnapshot userEmail = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (userEmail.docs.isNotEmpty) {
+      String userId = userEmail.docs.first.id;
+
+      firestore.collection('users').doc(myUid).update({
+        'my_users': FieldValue.arrayUnion([userId])
+      });
+    }
+  }
+
   Future sendMessage(String uid, String msg, String roomId,
       {String? type}) async {
     /*{} to make type optional*/
-    String msgId = Uuid().v1(); /*unique time based id*/
+    String msgId = const Uuid().v1(); /*unique time based id*/
+
     Message message = Message(
         id: msgId,
         fromId: myUid,
@@ -64,6 +95,7 @@ class FireData {
         read: '',
         type: type ?? 'text',
         message: msg);
+
     await firestore
         .collection('rooms')
         .doc(roomId)
@@ -72,13 +104,40 @@ class FireData {
         .set(message.toJson());
 
     await firestore.collection('rooms').doc(roomId).update({
-      'last_message':type ?? msg,
+      'last_message': type ?? msg,
+      'last_message_time': DateTime.now().millisecondsSinceEpoch.toString()
+    });
+  }
+
+  Future sendGMessage( String msg, String groupId,
+      {String? type}) async {
+    /*{} to make type optional*/
+    String msgId = const Uuid().v1(); /*unique time based id*/
+
+    Message message = Message(
+        id: msgId,
+        fromId: myUid,
+        toId: '',
+        createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+        read: '',
+        type: type ?? 'text',
+        message: msg);
+
+    await firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .doc(msgId)
+        .set(message.toJson());
+
+    await firestore.collection('groups').doc(groupId).update({
+      'last_message': type ?? msg,
       'last_message_time': DateTime.now().millisecondsSinceEpoch.toString()
     });
   }
 
   Future readMessage(String roomId, String msgId) async {
-    firestore
+    await firestore
         .collection('rooms')
         .doc(roomId)
         .collection('messages')
@@ -91,13 +150,35 @@ class FireData {
   }
 
   deleteMsg(String roomId, List<String> msgs) async {
-    for (var element in msgs) {
+    if (msgs.length == 1) {
       await firestore
           .collection('rooms')
           .doc(roomId)
           .collection('messages')
-          .doc(element)
+          .doc(msgs.first)
           .delete();
+    } else {
+      for (var element in msgs) {
+        await firestore
+            .collection('rooms')
+            .doc(roomId)
+            .collection('messages')
+            .doc(element)
+            .delete();
+      }
     }
+  }
+  Future editGroup(String gId ,String name ,List members) async{
+    await firestore.collection('groups').doc(gId).update(
+      {
+        'name': name ,
+        'members': FieldValue.arrayUnion(members),
+      }
+    );
+  }
+  Future removeMember(String gId, String memberId) async{
+    await firestore.collection('groups').doc(gId).update({
+      'members': FieldValue.arrayRemove([memberId])
+    });
   }
 }

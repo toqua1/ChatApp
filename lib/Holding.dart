@@ -1,7 +1,7 @@
-import 'package:chatapp/screens/chats/chat_home.dart';
-import 'package:chatapp/screens/contacts/contacts_home.dart';
-import 'package:chatapp/screens/groups/widgets/groups_home.dart';
-import 'package:chatapp/screens/settings/settings2_home.dart';
+import 'package:chatapp/screens/chats/screens/chat_home.dart';
+import 'package:chatapp/screens/contacts/screens/contacts_home.dart';
+import 'package:chatapp/screens/groups/screens/groups_home.dart';
+import 'package:chatapp/screens/settings/screens/settings2_home.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';

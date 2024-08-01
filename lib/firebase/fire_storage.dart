@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:chatapp/firebase/fire_database.dart';
-import 'package:path/path.dart';
-
 import 'package:firebase_storage/firebase_storage.dart';
 
 class FireStorage {
@@ -19,6 +17,6 @@ class FireStorage {
     String imageUrl = await ref.getDownloadURL();
     // print(imageUrl);
 
-    await FireData().sendMessage(uid, imageUrl, roomId, type: 'image');
+    await FireData().sendMessage(uid, imageUrl, roomId, type: 'Photo');
   }
 }
