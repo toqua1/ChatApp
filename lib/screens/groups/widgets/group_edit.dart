@@ -100,7 +100,7 @@ class _GroupEditScreenState extends State<GroupEditScreen> {
                     children: [
                       const Text("Add Members"),
                       const Spacer(),
-                      Text(myContacts.length.toString()),
+                      Text(widget.chatGroup.members.length.toString()),
                     ],
                   ),
                   const SizedBox(

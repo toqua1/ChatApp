@@ -20,7 +20,7 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
   @override
   Widget build(BuildContext context) {
     bool isAdmin = widget.chatGroup.admin?.contains(FirebaseAuth.instance.currentUser?.uid) ?? false;
-
+    String myId=FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Group Members"),
@@ -72,12 +72,33 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                       ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      myId != userList[index].id?
                       IconButton(
                         onPressed: () {
                           // Add admin logic here
+                          admin?
+                              FireData().removeAdmin(
+                              widget.chatGroup.id,
+                              userList[index].id!
+                            ).then((value){
+                              setState(() {
+                                widget.chatGroup.admin
+                                    .remove(userList[index].id);
+                              });
+                          }):
+                          FireData().promptAdmin(
+                              widget.chatGroup.id,
+                              userList[index].id!
+                          ).then((value){
+                            setState(() {
+                              widget.chatGroup.admin
+                                  .add(userList[index].id);
+                            });
+                          });
                         },
                         icon: const Icon(Iconsax.user_tick),
-                      ),
+                      ):Container(),
+                      myId != userList[index].id?
                       IconButton(
                         onPressed: () {
                           FireData()
@@ -92,7 +113,7 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                           });
                         },
                         icon: const Icon(Iconsax.trash ,color: Colors.red,),
-                      ),
+                      ):Container(),
                     ],
                   )
                       : null,

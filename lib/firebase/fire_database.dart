@@ -176,6 +176,20 @@ class FireData {
       }
     );
   }
+  Future promptAdmin(String gId ,String memberId) async{
+    await firestore.collection('groups').doc(gId).update(
+        {
+          'admins_id': FieldValue.arrayUnion([memberId]),
+        }
+    );
+  }
+  Future removeAdmin(String gId ,String memberId) async{
+    await firestore.collection('groups').doc(gId).update(
+        {
+          'admins_id': FieldValue.arrayRemove([memberId]),
+        }
+    );
+  }
   Future removeMember(String gId, String memberId) async{
     await firestore.collection('groups').doc(gId).update({
       'members': FieldValue.arrayRemove([memberId])
