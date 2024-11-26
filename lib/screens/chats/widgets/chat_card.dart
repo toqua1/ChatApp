@@ -3,9 +3,8 @@ import 'package:chatapp/screens/chats/screens/chatRoom.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../models/chat_room_model.dart';
-import '../../../models/messageModel.dart';
+import 'chat_card_row.dart';
 
 class ChatCard extends StatefulWidget {
   const ChatCard({
@@ -39,82 +38,25 @@ class _ChatCardState extends State<ChatCard>{
              Navigator.push(context,
                  MaterialPageRoute(builder: (context)=>ChatRoomItem(
                    roomId: widget.item.id!,
-                   chatUser: chatUser,
+                   chatUser: chatUser!,
                  ))
              );
            },
            child :Padding(
              padding: const EdgeInsets.symmetric(vertical: 3.0),
              child: Card(
-               child: ListTile(
-                 title: Text(chatUser!.name! ,style: const TextStyle(
-                     fontSize: 20 ,fontFamily: "serif" ,fontWeight: FontWeight.w500
-                 ),),
-                 leading: const CircleAvatar(
-                   radius: 30,
-                   backgroundImage: AssetImage("assetsEdited/toqua5.jpg"),
-                 ),
-                 trailing: StreamBuilder(/*we use it as we need to get data*/
-                   stream:FirebaseFirestore.instance
-                   .collection('rooms')
-                       .doc(widget.item.id)
-                   .collection('messages').snapshots(),
-                   builder: (context,snapshot) {
-                     if (snapshot.hasData) {
-                       final unReadList = snapshot.data!.docs
-                           .map((e) => Message.fromJason(e.data()))
-                           .where((element) => element.read == "")
-                           .where((element) =>
-                       element.fromId !=
-                           FirebaseAuth.instance.currentUser!.uid) ?? [];
-
-                       return unReadList.isNotEmpty ?
-                       Badge(
-                         textStyle: const TextStyle(
-                             fontWeight: FontWeight.w500
-                         ),
-                         backgroundColor: Theme
-                             .of(context)
-                             .colorScheme
-                             .primary,
-                         textColor: Theme
-                             .of(context)
-                             .colorScheme
-                             .primaryContainer,
-                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                         label: Text(unReadList.length.toString()),
-                         largeSize: 30, /*30*/
-                       ) :
-                       Text(
-                           DateFormat.yMMMEd().format(
-                               DateTime.fromMillisecondsSinceEpoch(
-                                   int.parse(widget.item.lastMessageTime!)
-                               )).toString()
-                       );
-                     }else{
-                       return const CircularProgressIndicator();
-                     }
-                   }
-                 ),
-                 subtitle:
-                     Text(
-                       maxLines: 1,
-                       overflow: TextOverflow.ellipsis,
-                       widget.item.lastMessage! == "" ?
-                       chatUser.about! : widget.item.lastMessage! ,
-                       style: const TextStyle(
-                           color: Colors.grey
-                       ),)
+               child:Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                 child: ChatCardRow(chatUser: chatUser, widget: widget),
                ),
-             ),
+               ),
            ),
          );
         }else{
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Container();
         }
       }
     );
   }
 }
+

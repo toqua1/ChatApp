@@ -13,78 +13,92 @@ class chats extends StatefulWidget {
   @override
   State<chats> createState() => _chatsState();
 }
-class _chatsState extends State<chats>{
-  final TextEditingController _emailController =TextEditingController();
+
+class _chatsState extends State<chats> {
+  final TextEditingController _emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         automaticallyImplyLeading: false,
-        title: const Text("ChatHub" ,style: TextStyle(
-          color: Colors.white ,fontSize: 25 ,fontFamily: "exo" ,letterSpacing: 4
-        ),),
+        title: const Text(
+          "ChatHub",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontFamily: "exo",
+              letterSpacing: 4),
+        ),
         actions: [
           IconButton(
-          onPressed: (){
-
-          },
-              icon: const Icon(Icons.camera_alt_outlined ,color: Colors.white,size: 27,)
-          ),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.white,
+                size: 27,
+              )),
           IconButton(
-              onPressed: (){
-
-              },
-              icon: const Icon(Icons.search,color: Colors.white, size: 30,)
-          ),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+                size: 30,
+              )),
           IconButton(
-              onPressed: (){
-
-              },
-              icon: const Icon(Icons.more_vert,color: Colors.white,size: 30,),
+            onPressed: () {},
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+              size: 30,
+            ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('rooms')
-              .where('members', arrayContains:FirebaseAuth.instance
-              .currentUser!.uid )/*we don't need to restore all rooms ,so we
-              get only rooms that contain my user id*/
-              .snapshots(),
-
-          builder: (BuildContext context, snapshot) {
-
-            if(snapshot.hasData){
-              List<ChatRoom> items =snapshot.data!.docs.map((e) => ChatRoom
-                  .fromJson(e.data())).toList()..sort(
-                  (a,b)=>b.lastMessageTime!.compareTo(a.lastMessageTime!)
-              ) ;
-              return  ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context ,index){
-                    return ChatCard(
-                      item: items[index]
-                    ) ;
-                  }
-              );
-
-            }else{
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-          },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Expanded(
+               child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('rooms')
+                          .where('members',
+                          arrayContains: FirebaseAuth.instance.currentUser!
+                              .uid) /*we don't need to restore all rooms ,so we
+                        get only rooms that contain my user id*/
+                          .snapshots(),
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<ChatRoom> items = snapshot.data!.docs
+                              .map((e) => ChatRoom.fromJson(e.data()))
+                              .toList()
+                            ..sort((a, b) =>
+                                b.lastMessageTime!.compareTo(
+                                    a.lastMessageTime!));
+                          return ListView.builder(
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                return ChatCard(item: items[index]);
+                              });
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showBottomSheet(
               context: context,
-              builder: (context){
+              builder: (context) {
                 return Container(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -92,23 +106,22 @@ class _chatsState extends State<chats>{
                     children: [
                       Row(
                         children: [
-                          Text("Enter friend name" ,style: Theme.of
-                        (context).textTheme.bodyLarge,
+                          Text(
+                            "Enter friend name",
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           Spacer(),
                           IconButton.filled(
-                              onPressed: (){
-
-                              },
-                              icon: Icon(Iconsax.scan_barcode),
+                            onPressed: () {},
+                            icon: Icon(Iconsax.scan_barcode),
                           )
                         ],
                       ),
                       custom_FormTextfield(
-                          label: "Email",
-                          controller: _emailController ,
-                          hintText:"Enter your friend email"
-                         , name: false ,
+                        label: "Email",
+                        controller: _emailController,
+                        hintText: "Enter your friend email",
+                        name: false,
                         prefixIcon: const Icon(Iconsax.direct),
                       ),
                       const SizedBox(
@@ -117,29 +130,27 @@ class _chatsState extends State<chats>{
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.only(
-                              right: 20 ,left: 20
-                              ,bottom: 16 ,top: 16),
-                          shape:  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          ),
-                          backgroundColor: Theme.of(context).colorScheme.primaryContainer ,
+                              right: 20, left: 20, bottom: 16, top: 16),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                         ),
-                          onPressed: (){
-                          if(_emailController.text!="") {
+                        onPressed: () {
+                          if (_emailController.text != "") {
                             FireData().createRoom(_emailController.text);
-                           setState(() {
-                             _emailController.text="" ;
-                           });
-                           Navigator.pop(context);
+                            setState(() {
+                              _emailController.text = "";
+                            });
+                            Navigator.pop(context);
                           }
-                            },
-                          child:const Center(child: Text("Create Chat")),
+                        },
+                        child: const Center(child: Text("Create Chat")),
                       )
                     ],
                   ),
                 );
-              }
-          );
+              });
         },
         child: const Icon(Iconsax.message_add_1),
       ),
