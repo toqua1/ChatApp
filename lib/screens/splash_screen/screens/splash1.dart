@@ -3,7 +3,9 @@ import 'package:chatapp/Holding.dart';
 import 'package:chatapp/screens/onBoarding_screen/screen/onboarding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../helper/size_config.dart';
+import '../../../provider/provider.dart';
 import '../widgets/logo_and_title.dart';
 
 class Splash1 extends StatefulWidget {
@@ -16,7 +18,9 @@ class Splash1 extends StatefulWidget {
 class _Splash1State extends State<Splash1> {
   @override
   void initState() {
-    super.initState();
+    Provider.of<ProviderApp>(context, listen: false).getValuesPref();
+   Provider.of<ProviderApp>(context , listen: false).getUserDetails();
+   super.initState();
     Timer(const Duration(seconds: 6),
             ()=> Navigator.push(context,
             MaterialPageRoute(builder: (context)=>

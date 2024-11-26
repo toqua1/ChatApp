@@ -195,4 +195,13 @@ class FireData {
       'members': FieldValue.arrayRemove([memberId])
     });
   }
+  Future editProfile(String name , String about)async{
+    await firestore
+        .collection('users')
+        .doc(myUid)
+        .update({
+      'name':name,
+      'about':about
+    });
+  }
 }
