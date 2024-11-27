@@ -13,7 +13,7 @@ class FireAuth {
         id: user.uid,
         name: user.displayName ?? "",
         email: user.email ?? "",
-        about: "Hello i am Toqua",
+        about: "Hello, I'm Available",
         image: '',
         createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
         lastActivated: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -23,5 +23,11 @@ class FireAuth {
     );
  await firebaseFirestore.collection('users').doc(user.uid).set(chatUser.toJson
       ());
+  }
+  Future getToken(String token)async{
+    await firebaseFirestore.collection('users')
+        .doc(auth.currentUser!.uid).update({
+      'puch_token':token,
+    });
   }
 }

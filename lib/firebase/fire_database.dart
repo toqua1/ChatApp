@@ -1,9 +1,13 @@
+import 'package:chatapp/helper/notification_helper.dart';
 import 'package:chatapp/models/group_model.dart';
 import 'package:chatapp/models/messageModel.dart';
+import 'package:chatapp/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import '../models/chat_room_model.dart';
+import 'package:http/http.dart' as http;
 
 class FireData {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -82,8 +86,8 @@ class FireData {
     }
   }
 
-  Future sendMessage(String uid, String msg, String roomId,
-      {String? type}) async {
+  Future sendMessage(String uid, String msg, String roomId,ChatUser chatUser
+  ,BuildContext context, {String? type}) async {
     /*{} to make type optional*/
     String msgId = const Uuid().v1(); /*unique time based id*/
 
@@ -101,7 +105,10 @@ class FireData {
         .doc(roomId)
         .collection('messages')
         .doc(msgId)
-        .set(message.toJson());
+        .set(message.toJson()).then((value){
+          NotificationsHelper().sendNotifications(chatUser: chatUser,
+              context: context, msg: msg, userId: uid ,type: type);
+    });
 
     await firestore.collection('rooms').doc(roomId).update({
       'last_message': type ?? msg,
@@ -109,9 +116,17 @@ class FireData {
     });
   }
 
-  Future sendGMessage( String msg, String groupId,
-      {String? type}) async {
+  Future sendGMessage( String msg, String groupId,GroupChat chatGroup
+  ,BuildContext context,{String? type}) async {
     /*{} to make type optional*/
+    List<ChatUser> chatUsers = [];
+    /*remove me from users that i should send msg to*/
+    chatGroup.members = chatGroup.members.where((element) => element != myUid)
+        .toList();
+    firestore.collection('users').where('id' ,whereIn: chatGroup.members).get()
+    .then((value) => chatUsers.addAll(value.docs.map((e) => ChatUser.fromJson
+      (e.data()))));
+
     String msgId = const Uuid().v1(); /*unique time based id*/
 
     Message message = Message(
@@ -128,7 +143,17 @@ class FireData {
         .doc(groupId)
         .collection('messages')
         .doc(msgId)
-        .set(message.toJson());
+        .set(message.toJson()).then((value){
+          for (var element in chatUsers){
+            NotificationsHelper().sendNotifications(
+                chatUser: element,
+                context: context,
+                msg: msg,
+              userId: element.id!,
+              groupName: chatGroup.name
+            );
+          }
+    });
 
     await firestore.collection('groups').doc(groupId).update({
       'last_message': type ?? msg,
@@ -203,5 +228,6 @@ class FireData {
       'name':name,
       'about':about
     });
+
   }
 }

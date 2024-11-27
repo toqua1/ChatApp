@@ -52,16 +52,16 @@ class _GroupRoomState extends State<GroupRoom> {
                         .where('id', whereIn: widget.chatGroup.members)
                         .snapshots(),
                     builder: (context, snapshot) {
-                      if(snapshot.hasData){
+                      if (snapshot.hasData) {
                         List membersNames = [];
-                        for (var element in snapshot.data!.docs){
-                          membersNames.add(element.data()['name']) ;
+                        for (var element in snapshot.data!.docs) {
+                          membersNames.add(element.data()['name']);
                         }
                         return Text(
                           membersNames.join(', '),
                           style: Theme.of(context).textTheme.labelLarge,
                         );
-                      }else{
+                      } else {
                         return Container();
                       }
                     }),
@@ -75,9 +75,9 @@ class _GroupRoomState extends State<GroupRoom> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GroupMemberScreen(chatGroup:
-                      widget.chatGroup ,
-                      )));
+                      builder: (context) => GroupMemberScreen(
+                            chatGroup: widget.chatGroup,
+                          )));
             },
             icon: const Icon(Iconsax.user),
           ),
@@ -215,9 +215,12 @@ class _GroupRoomState extends State<GroupRoom> {
                 IconButton.filled(
                   onPressed: () {
                     if (msgController.text.isNotEmpty) {
-                      FireData()
-                          .sendGMessage(msgController.text, widget.chatGroup.id)
-                          .then((value) => msgController.text = '');
+                      FireData().sendGMessage(
+                          msgController.text,
+                          widget.chatGroup.id,
+                          widget.chatGroup,
+                        context
+                      ).then((value) => msgController.text = '');
                       _controller.animateTo(
                         _controller.position.maxScrollExtent,
                         duration: const Duration(seconds: 1),

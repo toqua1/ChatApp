@@ -2,6 +2,7 @@ import 'package:chatapp/provider/provider.dart';
 import 'package:chatapp/screens/settings/screens/profile2.dart';
 import 'package:chatapp/screens/settings/widgets/qr_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';

@@ -1,6 +1,8 @@
+import 'package:chatapp/firebase/fire_auth.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +17,15 @@ getUserDetails()async{
   .collection('users')
   .doc(myId).get()
   .then((value) => me = ChatUser.fromJson(value.data()!));
+  FirebaseMessaging.instance.requestPermission();
+  await FirebaseMessaging.instance.getToken().then(
+      (value){
+        if(value != null){
+          me!.puchToken = value ;
+          FireAuth().getToken(value);
+        }
+      }
+  );
   notifyListeners();
 }
 changeMode(bool dark)async{

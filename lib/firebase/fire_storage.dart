@@ -3,12 +3,15 @@ import 'package:chatapp/firebase/fire_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import '../models/userModel.dart';
 
 class FireStorage {
   final FirebaseStorage fireStorage = FirebaseStorage.instance;
 
   sendImage(
-      {required File file, required String roomId, required String uid}) async {
+      {required File file, required String roomId, required String uid,
+      required BuildContext context ,required ChatUser chatUser}) async {
     String ext = file.path.split('.').last;
 
     final ref = fireStorage.ref().child('image/$roomId/'
@@ -19,7 +22,7 @@ class FireStorage {
     String imageUrl = await ref.getDownloadURL();
     // print(imageUrl);
 
-    await FireData().sendMessage(uid, imageUrl, roomId, type: 'Photo');
+    await FireData().sendMessage(uid,imageUrl,roomId,chatUser,context,type:'Photo');
   }
 
   updateProfileImage(

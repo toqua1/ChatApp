@@ -11,7 +11,11 @@ class HeyWidget extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () => FireData().sendGMessage(
-            " HEY !! ", groupChat.id),
+            " HEY !! ",
+            groupChat.id,
+            groupChat,
+            context
+        ),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(12),

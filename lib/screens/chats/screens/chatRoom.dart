@@ -59,9 +59,10 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      DateFormat.MMMMEEEEd()
-                          .add_jm()
-                          .format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.chatUser.lastActivated!))), // Changed from DateTime.parse
+                      DateFormat.MMMMEEEEd().add_jm().format(
+                          DateTime.fromMillisecondsSinceEpoch(int.parse(widget
+                              .chatUser
+                              .lastActivated!))), // Changed from DateTime.parse
                       style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
@@ -236,7 +237,12 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                       : Center(
                           child: GestureDetector(
                             onTap: () => FireData().sendMessage(
-                                widget.chatUser.id!, " HEY !! ", widget.roomId),
+                                widget.chatUser.id!,
+                                " HEY !! ",
+                                widget.roomId,
+                                widget.chatUser,
+                                context,
+                                type: 'text'),
                             child: Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
@@ -294,11 +300,13 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                             borderRadius: BorderRadius.circular(16)),
                         hintText: "Message",
                         hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon:  IconButton(
-                          onPressed: () {  },
-                          icon: const Icon(Icons.emoji_emotions_outlined ,
-                            size: 25,),
-                        ) ,
+                        prefixIcon: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.emoji_emotions_outlined,
+                            size: 25,
+                          ),
+                        ),
                         suffixIcon: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
@@ -312,7 +320,10 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                                     FireStorage().sendImage(
                                         file: File(image.path),
                                         roomId: widget.roomId,
-                                        uid: widget.chatUser.id!);
+                                        uid: widget.chatUser.id!,
+                                        context: context,
+                                        chatUser: widget.chatUser
+                                    );
                                     // print(image.path);
                                   }
                                 },
@@ -326,10 +337,13 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                 IconButton.filled(
                   onPressed: () {
                     if (msgController.text.isNotEmpty) {
-                      FireData()
-                          .sendMessage(widget.chatUser.id!, msgController.text,
-                              widget.roomId)
-                          .then((value) => setState(() {
+                      FireData().sendMessage(
+                          widget.chatUser.id!,
+                          msgController.text,
+                          widget.roomId,
+                        widget.chatUser,
+                        context
+                      ).then((value) => setState(() {
                                 msgController.text = "";
                                 // Navigator.pop(context);
                               }));
