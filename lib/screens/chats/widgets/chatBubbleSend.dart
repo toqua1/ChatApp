@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/photo_view.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,11 +55,15 @@ class _ChatBubbleSendState extends State<ChatBubbleSend> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         widget.messageItem.type=='Photo' ?
-                          CachedNetworkImage(
-                            imageUrl: widget.messageItem.message!,
-                            placeholder: (context,url){
-                              return const CircularProgressIndicator();
-                            },
+                          GestureDetector(
+                            onTap:() => Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => PhotoViewScreen(img: widget.messageItem.message!))),
+                            child: CachedNetworkImage(
+                              imageUrl: widget.messageItem.message!,
+                              placeholder: (context,url){
+                                return const CircularProgressIndicator();
+                              },
+                            ),
                           )
                             :Text(widget.messageItem.message!
                             // ,softWrap: true,

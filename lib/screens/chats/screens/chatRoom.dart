@@ -133,10 +133,15 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                                 FirebaseAuth.instance.currentUser!.uid;
                             if (isMe) {
                               return GestureDetector(
-                                child: ChatBubbleSend(
-                                  messageItem: messageItems[index],
-                                  selected: selectedMsg
-                                      .contains(messageItems[index].id),
+                                child: Row(
+                                  children: [
+                                    const Spacer(),
+                                    ChatBubbleSend(
+                                      messageItem: messageItems[index],
+                                      selected: selectedMsg
+                                          .contains(messageItems[index].id),
+                                    ),
+                                  ],
                                 ),
                                 onLongPress: () {
                                   setState(() {
@@ -181,11 +186,16 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                               );
                             } else {
                               return GestureDetector(
-                                child: ChatBubbleRecieve(
-                                  messageItem: messageItems[index],
-                                  roomId: widget.roomId,
-                                  selected: selectedMsg
-                                      .contains(messageItems[index].id),
+                                child: Row(
+                                  children: [
+                                    ChatBubbleRecieve(
+                                      messageItem: messageItems[index],
+                                      roomId: widget.roomId,
+                                      selected: selectedMsg
+                                          .contains(messageItems[index].id),
+                                    ),
+                                    const Spacer(),
+                                  ],
                                 ),
                                 onLongPress: () {
                                   setState(() {

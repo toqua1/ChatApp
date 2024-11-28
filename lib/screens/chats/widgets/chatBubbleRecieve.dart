@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../../firebase/fire_database.dart';
+import '../../../helper/photo_view.dart';
 import '../../../models/messageModel.dart';
 
 class ChatBubbleRecieve extends StatefulWidget {
@@ -23,6 +24,7 @@ class ChatBubbleRecieve extends StatefulWidget {
 }
 
 class _ChatBubbleRecieveState extends State<ChatBubbleRecieve> {
+  @override
   void initState() {
     /*we use init as it identify that we enter message bubble
    area and this will help us in read field*/
@@ -65,11 +67,15 @@ class _ChatBubbleRecieveState extends State<ChatBubbleRecieve> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   widget.messageItem.type=='Photo' ?
-                  CachedNetworkImage(
-                    imageUrl: widget.messageItem.message!,
-                    placeholder: (context,url){
-                      return const CircularProgressIndicator();
-                    },
+                  GestureDetector(
+                    onTap:() => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PhotoViewScreen(img: widget.messageItem.message!))),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.messageItem.message!,
+                      placeholder: (context,url){
+                        return const CircularProgressIndicator();
+                      },
+                    ),
                   )
                       :Text(widget.messageItem.message!
                     // ,softWrap: true,
