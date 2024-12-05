@@ -1,7 +1,6 @@
 import 'package:chatapp/helper/date_time.dart';
 import 'package:universal_io/io.dart';
 import 'package:chatapp/firebase/fire_database.dart';
-import 'package:chatapp/firebase/fire_storage.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/screens/chats/widgets/chatBubbleRecieve.dart';
@@ -11,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_picker/image_picker.dart';
-import '../widgets/chat_card_profile.dart';
+import '../widgets/chat_card_title.dart';
+import '../widgets/gif_hey.dart';
+import '../widgets/message_textfield.dart';
 
 class ChatRoomItem extends StatefulWidget {
   const ChatRoomItem({super.key, required this.roomId, required this.chatUser});
@@ -35,51 +35,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            ChatCardProfile(chatUser: widget.chatUser),
-            const SizedBox(
-              width: 10,
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.chatUser.name!,
-                    /*using widget as we are
-                            inside stateful widget */
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontFamily: "serif",
-                        fontWeight: FontWeight.w500),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: StreamBuilder(
-                      stream:FirebaseFirestore.instance.collection('users')
-                        .doc(widget.chatUser.id!).snapshots(),
-                      builder: (context, snapshot) {
-                        if(snapshot.hasData){
-                          return Text(
-                            snapshot.data!.data()!['online']
-                                ? 'Online'
-                                :"Last seen ${MyDateTime.dateAndTime(widget.chatUser.lastActivated!)}"
-                                " at ${MyDateTime.timeDate(widget.chatUser.lastActivated!)}", // Changed from
-                            // DateTime.parse
-                            style: Theme.of(context).textTheme.labelLarge,
-                          );
-                        }else{
-                          return Container();
-                        }
-                      }
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        title: ChatCardTitle(widget: widget),
         actions: selectedMsg.isEmpty
             ? [
                 const Icon(Icons.call),
@@ -288,32 +244,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                           // messagesList.length,
                           controller: _controller,
                         )
-                      : Center(
-                          child: GestureDetector(
-                            onTap: () => FireData().sendMessage(
-                                widget.chatUser.id!,
-                                " HEY !! ",
-                                widget.roomId,
-                                widget.chatUser,
-                                context,
-                                type: 'text'),
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Image.asset(
-                                      "assetsEdited/hiSticker1"
-                                      ".gif",
-                                      width: 200,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
+                      : GifHey(widget: widget);
                 } else {
                   return Center(
                     child: Container(),
@@ -326,68 +257,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
             padding: const EdgeInsets.only(bottom: 18.0),
             child: Row(
               children: [
-                Expanded(
-                  child: Card(
-                    child: TextField(
-                      maxLines: 6,
-                      minLines: 1,
-                      controller: msgController,
-                      onSubmitted: (data) {
-                        /*data here is object type so it refers to different data types but in add to firestore we use map to refer which data fields to use */
-                        messages
-                            .add({
-                              'message': data,
-                              /*message here is the key(field) */
-                              'createdAt': DateTime.now()
-                            })
-                            .then((value) => print("Message Added"))
-                            .catchError((error) =>
-                                print("Failed to add message: $error"));
-                        msgController.clear();
-                        _controller.animateTo(
-                            _controller.position.maxScrollExtent,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.fastOutSlowIn); /*or easeIn*/
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        hintText: "Message",
-                        hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.emoji_emotions_outlined,
-                            size: 25,
-                          ),
-                        ),
-                        suffixIcon: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                                onPressed: () async {
-                                  ImagePicker picker = ImagePicker();
-                                  XFile? image = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  if (image != null) {
-                                    FireStorage().sendImage(
-                                        file: File(image.path),
-                                        roomId: widget.roomId,
-                                        uid: widget.chatUser.id!,
-                                        context: context,
-                                        chatUser: widget.chatUser
-                                    );
-                                    // print(image.path);
-                                  }
-                                },
-                                icon: const Icon(Icons.photo_camera_outlined)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                MessageTextField(msgController: msgController, messages: messages, controller: _controller, widget: widget),
                 IconButton.filled(
                   onPressed: () {
                     if (msgController.text.isNotEmpty) {
@@ -413,3 +283,6 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
     );
   }
 }
+
+
+
