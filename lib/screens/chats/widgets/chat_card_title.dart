@@ -49,7 +49,7 @@ class ChatCardTitle extends StatelessWidget {
                           style: Theme.of(context).textTheme.labelLarge,
                         );
                       }else{
-                        return Container();
+                        return const SizedBox(width:300 ,height: 300,);
                       }
                     }
                 ),
