@@ -4,8 +4,8 @@ import '../../../helper/date_time.dart';
 import '../screens/chatRoom.dart';
 import 'chat_card_profile.dart';
 
-class ChatCardTitle extends StatelessWidget {
-  const ChatCardTitle({
+class ChatRoomTitle extends StatelessWidget {
+  const ChatRoomTitle({
     super.key,
     required this.widget,
   });

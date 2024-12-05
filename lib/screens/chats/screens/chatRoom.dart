@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import '../widgets/chat_card_title.dart';
+import '../widgets/chat_room_title.dart';
 import '../widgets/gif_hey.dart';
 import '../widgets/message_textfield.dart';
 
@@ -46,7 +46,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: ChatCardTitle(widget: widget),
+      title: ChatRoomTitle(widget: widget),
       actions: selectedMsg.isEmpty ? _buildDefaultActions() : _buildSelectionActions(),
     );
   }
@@ -145,7 +145,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
 
   List<Widget> _buildReceiveBubble(Message message) {
     return [
-      ChatBubbleRecieve(
+      ChatBubbleReceive(
         messageItem: message,
         roomId: widget.roomId,
         selected: selectedMsg.contains(message.id),

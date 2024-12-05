@@ -1,35 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import '../../../firebase/fire_database.dart';
 import '../../../helper/photo_view.dart';
 import '../../../models/messageModel.dart';
 
-class ChatBubbleRecieve extends StatefulWidget {
-  const ChatBubbleRecieve(
-      {super.key,
-      // required this.message,
-      required this.messageItem,
-      required this.roomId,
-      required this.selected});
-  // final String message ;/*doc*/
+class ChatBubbleReceive extends StatefulWidget {
+  const ChatBubbleReceive({
+    super.key,
+    required this.messageItem,
+    required this.roomId,
+    required this.selected,
+  });
+
   final Message messageItem;
   final String roomId;
   final bool selected;
+
   @override
-  State<ChatBubbleRecieve> createState() => _ChatBubbleRecieveState();
+  State<ChatBubbleReceive> createState() => _ChatBubbleReceiveState();
 }
 
-class _ChatBubbleRecieveState extends State<ChatBubbleRecieve> {
+class _ChatBubbleReceiveState extends State<ChatBubbleReceive> {
   @override
   void initState() {
-    /*we use init as it identify that we enter message bubble
-   area and this will help us in read field*/
     super.initState();
-
     if (widget.messageItem.toId == FirebaseAuth.instance.currentUser!.uid) {
       FireData().readMessage(widget.roomId, widget.messageItem.id!);
     }
@@ -44,73 +40,74 @@ class _ChatBubbleRecieveState extends State<ChatBubbleRecieve> {
           color: widget.selected ? Colors.grey[400] : Colors.transparent,
           borderRadius: BorderRadius.circular(25),
         ),
-        margin: const EdgeInsets.symmetric(vertical: 1),
+        margin: const EdgeInsets.symmetric(vertical: 2),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.sizeOf(context).width / 2,
-              ),
-              padding:const EdgeInsets.all(16),
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                // color: Color(0xFFADB0B0),
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  widget.messageItem.type=='Photo' ?
-                  GestureDetector(
-                    onTap:() => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PhotoViewScreen(img: widget.messageItem.message!))),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.messageItem.message!,
-                      placeholder: (context,url){
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                  )
-                      :Text(widget.messageItem.message!
-                    // ,softWrap: true,
-                    // ,textAlign: TextAlign.start,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        DateFormat.yMMMEd()
-                            .format(DateTime.fromMillisecondsSinceEpoch(
-                            int.parse(widget.messageItem.createdAt!)))
-                            .toString(),
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                      const SizedBox(
-                        width: 6,
-                      ),
-                      widget.messageItem.read == ""
-                          ? const Icon(
-                        Icons.done_all,
-                        color: Colors.grey,
-                      )
-                          : const Icon(
-                        Icons.done_all,
-                        color: Colors.blueAccent,
-                      )
-                    ],
-                  ),
-                ],
-              ), /*doc message*/
-            ),
+            _buildMessageContent(context),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMessageContent(BuildContext context) {
+    final isPhotoMessage = widget.messageItem.type == 'Photo';
+    final createdAt = DateTime.fromMillisecondsSinceEpoch(
+      int.parse(widget.messageItem.createdAt!),
+    );
+
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width / 2,
+      ),
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          isPhotoMessage
+              ? GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PhotoViewScreen(img: widget.messageItem.message!),
+              ),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: widget.messageItem.message!,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+            ),
+          )
+              : Text(widget.messageItem.message!),
+          _buildTimestampRow(createdAt),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimestampRow(DateTime createdAt) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          DateFormat.yMMMEd().format(createdAt),
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
+        const SizedBox(width: 6),
+        Icon(
+          Icons.done_all,
+          color: widget.messageItem.read!.isEmpty ? Colors.grey : Colors.blueAccent,
+        ),
+      ],
     );
   }
 }
