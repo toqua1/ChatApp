@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/date_time.dart';
 import 'package:universal_io/io.dart';
 import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/firebase/fire_storage.dart';
@@ -11,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import '../widgets/chat_card_profile.dart';
 
 class ChatRoomItem extends StatefulWidget {
   const ChatRoomItem({super.key, required this.roomId, required this.chatUser});
@@ -36,10 +37,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
       appBar: AppBar(
         title: Row(
           children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage("assetsEdited/toqua5.jpg"),
-            ),
+            ChatCardProfile(chatUser: widget.chatUser),
             const SizedBox(
               width: 10,
             ),
@@ -58,12 +56,23 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                   ),
                   FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      DateFormat.MMMMEEEEd().add_jm().format(
-                          DateTime.fromMillisecondsSinceEpoch(int.parse(widget
-                              .chatUser
-                              .lastActivated!))), // Changed from DateTime.parse
-                      style: Theme.of(context).textTheme.labelLarge,
+                    child: StreamBuilder(
+                      stream:FirebaseFirestore.instance.collection('users')
+                        .doc(widget.chatUser.id!).snapshots(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          return Text(
+                            snapshot.data!.data()!['online']
+                                ? 'Online'
+                                :"Last seen ${MyDateTime.dateAndTime(widget.chatUser.lastActivated!)}"
+                                " at ${MyDateTime.timeDate(widget.chatUser.lastActivated!)}", // Changed from
+                            // DateTime.parse
+                            style: Theme.of(context).textTheme.labelLarge,
+                          );
+                        }else{
+                          return Container();
+                        }
+                      }
                     ),
                   ),
                 ],
@@ -129,17 +138,44 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                           reverse: true,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            bool isMe = messageItems[index].fromId ==
+                            //handlig date part//////////////////////////////
+                           String newDate ='';
+                           bool isSameDate = false;
+                           if((index == 0 && messageItems.length == 1)
+                               || index == messageItems.length -1 ){
+                             newDate = MyDateTime.dateAndTime(
+                                 messageItems[index].createdAt.toString()
+                             );
+                           }else{
+                             final DateTime date =MyDateTime.dateFormate(
+                                 messageItems[index].createdAt.toString()
+                             );
+                             final DateTime prevDate = MyDateTime.dateFormate(
+                                 messageItems[index + 1].createdAt.toString()
+                             );
+                             isSameDate = date.isAtSameMomentAs(prevDate);
+                             newDate = isSameDate ? "" :MyDateTime.dateAndTime(messageItems[index].createdAt.toString());
+                           }
+                            ////////////////////////////////////////////
+                           bool isMe = messageItems[index].fromId ==
                                 FirebaseAuth.instance.currentUser!.uid;
                             if (isMe) {
                               return GestureDetector(
-                                child: Row(
+                                child: Column(
                                   children: [
-                                    const Spacer(),
-                                    ChatBubbleSend(
-                                      messageItem: messageItems[index],
-                                      selected: selectedMsg
-                                          .contains(messageItems[index].id),
+                                    if(newDate != "")
+                                    Center(
+                                      child: Text(newDate),
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Spacer(),
+                                        ChatBubbleSend(
+                                          messageItem: messageItems[index],
+                                          selected: selectedMsg
+                                              .contains(messageItems[index].id),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -186,15 +222,23 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
                               );
                             } else {
                               return GestureDetector(
-                                child: Row(
+                                child: Column(
                                   children: [
-                                    ChatBubbleRecieve(
-                                      messageItem: messageItems[index],
-                                      roomId: widget.roomId,
-                                      selected: selectedMsg
-                                          .contains(messageItems[index].id),
+                                    if(newDate != "")
+                                      Center(
+                                        child: Text(newDate),
+                                      ),
+                                    Row(
+                                      children: [
+                                        ChatBubbleRecieve(
+                                          messageItem: messageItems[index],
+                                          roomId: widget.roomId,
+                                          selected: selectedMsg
+                                              .contains(messageItems[index].id),
+                                        ),
+                                        const Spacer(),
+                                      ],
                                     ),
-                                    const Spacer(),
                                   ],
                                 ),
                                 onLongPress: () {

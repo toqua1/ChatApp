@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/date_time.dart';
 import 'package:chatapp/helper/photo_view.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -73,10 +74,7 @@ class _ChatBubbleSendState extends State<ChatBubbleSend> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              DateFormat.yMMMEd()
-                                  .format(DateTime.fromMillisecondsSinceEpoch(
-                                      int.parse(widget.messageItem.createdAt!)))
-                                  .toString(),
+                             MyDateTime.timeDate(widget.messageItem.createdAt!),
                               style: Theme.of(context).textTheme.labelSmall,
                             ),
                             const SizedBox(
@@ -84,11 +82,11 @@ class _ChatBubbleSendState extends State<ChatBubbleSend> {
                             ),
                             widget.messageItem.read == ""
                                 ? const Icon(
-                                    Iconsax.tick_circle,
+                                    Icons.done_all,
                                     color: Colors.grey,
                                   )
                                 : const Icon(
-                                    Iconsax.tick_circle5,
+                                    Icons.done_all,
                                     color: Colors.blueAccent,
                                   )
                           ],

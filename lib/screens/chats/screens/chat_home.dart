@@ -16,6 +16,7 @@ class chats extends StatefulWidget {
 
 class _chatsState extends State<chats> {
   final TextEditingController _emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

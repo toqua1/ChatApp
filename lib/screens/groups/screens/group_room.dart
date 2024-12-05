@@ -35,37 +35,42 @@ class _GroupRoomState extends State<GroupRoom> {
             const SizedBox(
               width: 10,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.chatGroup.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontFamily: "serif",
-                    fontWeight: FontWeight.w500,
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.chatGroup.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: "serif",
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .where('id', whereIn: widget.chatGroup.members)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List membersNames = [];
-                        for (var element in snapshot.data!.docs) {
-                          membersNames.add(element.data()['name']);
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .where('id', whereIn: widget.chatGroup.members)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List membersNames = [];
+                          for (var element in snapshot.data!.docs) {
+                            membersNames.add(element.data()['name']);
+                          }
+                          return FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              membersNames.join(', '),
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                          );
+                        } else {
+                          return Container();
                         }
-                        return Text(
-                          membersNames.join(', '),
-                          style: Theme.of(context).textTheme.labelLarge,
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }),
-              ],
+                      }),
+                ],
+              ),
             ),
           ],
         ),
@@ -215,12 +220,10 @@ class _GroupRoomState extends State<GroupRoom> {
                 IconButton.filled(
                   onPressed: () {
                     if (msgController.text.isNotEmpty) {
-                      FireData().sendGMessage(
-                          msgController.text,
-                          widget.chatGroup.id,
-                          widget.chatGroup,
-                        context
-                      ).then((value) => msgController.text = '');
+                      FireData()
+                          .sendGMessage(msgController.text, widget.chatGroup.id,
+                              widget.chatGroup, context)
+                          .then((value) => msgController.text = '');
                       _controller.animateTo(
                         _controller.position.maxScrollExtent,
                         duration: const Duration(seconds: 1),

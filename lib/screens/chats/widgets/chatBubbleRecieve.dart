@@ -96,11 +96,11 @@ class _ChatBubbleRecieveState extends State<ChatBubbleRecieve> {
                       ),
                       widget.messageItem.read == ""
                           ? const Icon(
-                        Iconsax.tick_circle,
+                        Icons.done_all,
                         color: Colors.grey,
                       )
                           : const Icon(
-                        Iconsax.tick_circle5,
+                        Icons.done_all,
                         color: Colors.blueAccent,
                       )
                     ],
