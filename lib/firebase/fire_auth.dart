@@ -30,4 +30,12 @@ class FireAuth {
       'puch_token':token,
     });
   }
+  Future updateActivate(bool online)async{
+    await firebaseFirestore.collection('users')
+        .doc(auth.currentUser!.uid).update({
+      'last_activated': DateTime.now().millisecondsSinceEpoch.toString(),
+      'online':online,/*it work only when i make it after last_activated , in
+       the same order in Firebase */
+    });
+  }
 }

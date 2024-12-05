@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/date_time.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../models/messageModel.dart';
 import '../../../models/userModel.dart';
 import 'chat_card.dart';
+import 'chat_card_profile.dart';
 
 class ChatCardRow extends StatelessWidget {
   const ChatCardRow({
@@ -55,27 +57,6 @@ class ChatCardRow extends StatelessWidget {
   }
 }
 
-class ChatCardProfile extends StatelessWidget {
-  const ChatCardProfile({
-    super.key,
-    required this.chatUser,
-  });
-
-  final ChatUser? chatUser;
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundImage: chatUser?.image != null && chatUser!.image!.isNotEmpty
-          ? NetworkImage(chatUser!.image!)
-          : null,
-      child: chatUser?.image == null || chatUser!.image!.isEmpty
-          ? const Icon(Icons.person)
-          : null,
-    );
-  }
-}
-
 class ChatCardDate extends StatelessWidget {
   const ChatCardDate({
     super.key,
@@ -87,13 +68,9 @@ class ChatCardDate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-                    DateFormat.yMMMEd().format(
-    DateTime.fromMillisecondsSinceEpoch(
-      int.parse(widget.item.lastMessageTime!),
-    ),
-                    ),
-                    style: const TextStyle(fontSize: 12),
-                  );
+    MyDateTime.dateAndTime(widget.item.lastMessageTime!),
+    style: const TextStyle(fontSize: 12),
+    );
   }
 }
 
