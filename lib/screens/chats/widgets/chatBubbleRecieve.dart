@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../firebase/fire_database.dart';
+import '../../../helper/date_time.dart';
 import '../../../helper/photo_view.dart';
 import '../../../models/messageModel.dart';
 
@@ -52,9 +53,6 @@ class _ChatBubbleReceiveState extends State<ChatBubbleReceive> {
 
   Widget _buildMessageContent(BuildContext context) {
     final isPhotoMessage = widget.messageItem.type == 'Photo';
-    final createdAt = DateTime.fromMillisecondsSinceEpoch(
-      int.parse(widget.messageItem.createdAt!),
-    );
 
     return Container(
       constraints: BoxConstraints(
@@ -88,24 +86,19 @@ class _ChatBubbleReceiveState extends State<ChatBubbleReceive> {
             ),
           )
               : Text(widget.messageItem.message!),
-          _buildTimestampRow(createdAt),
+          _buildTimestampRow(widget.messageItem.createdAt!),
         ],
       ),
     );
   }
 
-  Widget _buildTimestampRow(DateTime createdAt) {
+  Widget _buildTimestampRow(String createdAt) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          DateFormat.yMMMEd().format(createdAt),
+          '\n${MyDateTime.timeDate(createdAt)}',
           style: Theme.of(context).textTheme.labelSmall,
-        ),
-        const SizedBox(width: 6),
-        Icon(
-          Icons.done_all,
-          color: widget.messageItem.read!.isEmpty ? Colors.grey : Colors.blueAccent,
         ),
       ],
     );

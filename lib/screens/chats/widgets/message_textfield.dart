@@ -40,12 +40,14 @@ class MessageTextField extends StatelessWidget {
             msgController.clear();
             _controller.animateTo(
                 _controller.position.maxScrollExtent,
-                duration: Duration(seconds: 1),
+                duration: const Duration(seconds: 1),
                 curve: Curves.fastOutSlowIn); /*or easeIn*/
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16)),
+                borderRadius: BorderRadius.circular(20) ,
+              borderSide: BorderSide.none
+            ),
             hintText: "Message",
             hintStyle: const TextStyle(color: Colors.grey),
             prefixIcon: IconButton(

@@ -46,6 +46,9 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
 
   AppBar _buildAppBar() {
     return AppBar(
+      leading: IconButton(onPressed: (){
+        Navigator.pop(context);
+      }, icon:const Icon(Icons.arrow_back_ios_new)),
       title: ChatRoomTitle(widget: widget),
       actions: selectedMsg.isEmpty ? _buildDefaultActions() : _buildSelectionActions(),
     );
@@ -189,7 +192,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
 
   Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 18.0),
+      padding: const EdgeInsets.only(bottom: 18.0 ,left: 5 ,right: 10),
       child: Row(
         children: [
           MessageTextField(
@@ -198,6 +201,7 @@ class _ChatRoomItemState extends State<ChatRoomItem> {
             controller: _controller,
             widget: widget,
           ),
+          const SizedBox(width: 5,),
           IconButton.filled(
             onPressed: _sendMessage,
             icon: const Icon(Iconsax.send_21),
