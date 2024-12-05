@@ -42,7 +42,7 @@ ChatUser? me=Provider.of<ProviderApp>(context).me;
         controller:pageController ,
         children: const [
           // _buildPage(_page),
-          chats(),
+          Chats(),
           GroupsHome(),
           ContactsHome(),
           SettingScreen(),
