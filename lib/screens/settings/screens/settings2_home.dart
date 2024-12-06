@@ -2,7 +2,6 @@ import 'package:chatapp/provider/provider.dart';
 import 'package:chatapp/screens/settings/screens/profile2.dart';
 import 'package:chatapp/screens/settings/widgets/qr_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -22,10 +21,10 @@ class _SettingScreenState extends State<SettingScreen> {
     final prov=Provider.of<ProviderApp>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text("Settings"),
       ),
       body: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child:SingleChildScrollView(
             child: Column(
               children: [
@@ -41,24 +40,24 @@ class _SettingScreenState extends State<SettingScreen> {
                   trailing: IconButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder:
-                          (context)=>QRCode()));
+                          (context)=>const QRCode()));
                     },
-                    icon: Icon(Iconsax.scan_barcode),
+                    icon: const Icon(Iconsax.scan_barcode),
                   ),
                 ),
                 Card(
                   child: ListTile(
-                    title: Text("Profile"),
-                    leading: Icon(Iconsax.user),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    title: const Text("Profile"),
+                    leading: const Icon(Iconsax.user),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen())),
                   ),
                 ),
                 Card(
                   child: ListTile(
-                    title: Text("Theme"),
-                    leading: Icon(Iconsax.color_swatch),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    title: const Text("Theme"),
+                    leading: const Icon(Iconsax.color_swatch),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                     onTap:() {
                       showDialog(
                           context: context,
@@ -78,7 +77,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                     onPressed: (){
                                        Navigator.pop(context);
                                     },
-                                    child: Text("Done"))
+                                    child: const Text("Done"))
                               ],
                             );
                           }

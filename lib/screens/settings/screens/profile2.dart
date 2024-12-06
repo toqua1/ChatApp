@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/firebase/fire_storage.dart';
 import 'package:chatapp/models/userModel.dart';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../models/chat_room_model.dart';
+import '../../../provider/provider.dart';
 import '../widgets/chat_card.dart';
 
 class Chats extends StatefulWidget {
@@ -36,7 +37,9 @@ class _ChatsState extends State<Chats> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: ProviderApp().themeMode == ThemeMode.dark?
+      Theme.of(context).colorScheme.onPrimary
+          :Theme.of(context).colorScheme.primary,
       automaticallyImplyLeading: false,
       title: const Text(
         "ChatHub",

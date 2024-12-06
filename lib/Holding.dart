@@ -80,8 +80,14 @@ ChatUser? me=Provider.of<ProviderApp>(context).me;
             labelStyle: TextStyle(color: Colors.white,)
           ),
         ],
-          color: Colors.deepPurple,
-          buttonBackgroundColor: Colors.blue ,
+          color:ProviderApp().themeMode == ThemeMode.dark?
+          Theme.of(context).colorScheme.primary
+        :Theme.of(context).colorScheme.inversePrimary,
+
+          buttonBackgroundColor:ProviderApp().themeMode == ThemeMode.dark?
+          Theme.of(context).colorScheme.onSurface
+        :Theme.of(context).colorScheme.onSurface,
+
           backgroundColor: Colors.transparent,
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 550),
