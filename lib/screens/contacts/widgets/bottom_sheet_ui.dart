@@ -33,7 +33,7 @@ class _BottomSheetUiState extends State<BottomSheetUi> {
               )
             ],
           ),
-          custom_FormTextfield(
+          CustomFormTextfield(
             label: "Email",
             controller: _emailController,
             hintText: "Enter your friend email",

@@ -11,7 +11,7 @@ class OutlinedButtonUi extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16)
         ),
-        padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 110),
+        // padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 110),
       ),
       onPressed: () {
         Navigator.push(context,

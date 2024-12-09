@@ -73,7 +73,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                           width: 16,
                         ),
                         Expanded(
-                          child: custom_FormTextfield(
+                          child: CustomFormTextfield(
                               label: "Group Name",
                               controller: _gNameCon,
                               hintText: "Enter group name",

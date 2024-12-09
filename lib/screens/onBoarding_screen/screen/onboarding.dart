@@ -32,7 +32,7 @@ class _OnboardingState extends State<Onboarding> {
       onSkip: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const login()),
+          MaterialPageRoute(builder: (context) => const Login()),
         );
       },
       onNext: () {
@@ -48,7 +48,7 @@ class _OnboardingState extends State<Onboarding> {
         } else if (index > 2) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const login()),
+            MaterialPageRoute(builder: (context) => const Login()),
           );
         }
       },

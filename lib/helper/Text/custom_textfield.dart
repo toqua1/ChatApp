@@ -5,7 +5,7 @@ import 'package:chatapp/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-class custom_FormTextfield extends StatelessWidget {
+class CustomFormTextfield extends StatelessWidget {
  String label ;
  TextEditingController controller ;
  String hintText ;
@@ -14,7 +14,7 @@ class custom_FormTextfield extends StatelessWidget {
  Widget? suffixIcon ;
  Widget? prefixIcon ;
  void Function(String)?onChange ;
- custom_FormTextfield({super.key,
+ CustomFormTextfield({super.key,
    required this.label ,
    required this.controller,
    required this.hintText,
@@ -45,7 +45,7 @@ class custom_FormTextfield extends StatelessWidget {
                focusedBorder:
                OutlineInputBorder(
                  borderRadius: BorderRadius.circular(15),
-                 borderSide: BorderSide(color: kPrimaryColor ,width: 2),
+                 borderSide: BorderSide(width: 2),
                ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -56,9 +56,9 @@ class custom_FormTextfield extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.red,width: 2),
               ),
               suffixIcon: suffixIcon,
-              suffixIconColor: kPrimaryColor,
+              // suffixIconColor: kPrimaryColor,
               prefixIcon: prefixIcon,
-              prefixIconColor: kPrimaryColor,
+              // prefixIconColor: kPrimaryColor,
               fillColor: Colors.transparent,
               filled: true,
               label: Text(label),

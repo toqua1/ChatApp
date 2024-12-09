@@ -20,7 +20,7 @@ class _AllTextFieldsState extends State<AllTextFields> {
 
     return Column(
       children: [
-        custom_FormTextfield(
+        CustomFormTextfield(
           label: "Email",
           name:false ,
           controller: emailController ,
@@ -33,7 +33,7 @@ class _AllTextFieldsState extends State<AllTextFields> {
         const SizedBox(
           height: 5,
         ),
-        custom_FormTextfield(
+        CustomFormTextfield(
           label: "Password",
           name:false ,
           controller: passwordController,

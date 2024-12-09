@@ -89,7 +89,7 @@ class _signupState extends State<signup> {
                         key: formKey ,
                         child: Column(
                           children: [
-                            custom_FormTextfield(
+                            CustomFormTextfield(
                               label: "Name",
                               name:true ,
                               controller: nameController ,
@@ -99,7 +99,7 @@ class _signupState extends State<signup> {
                             const SizedBox(
                               height: 5,
                             ),
-                            custom_FormTextfield(
+                            CustomFormTextfield(
                               label: "Email",
                               name:true ,
                               controller: emailController ,
@@ -112,7 +112,7 @@ class _signupState extends State<signup> {
                             const SizedBox(
                               height: 5,
                             ),
-                            custom_FormTextfield(
+                            CustomFormTextfield(
                               label: "Password",
                               name:true ,
                               controller: passwordController,
@@ -217,7 +217,7 @@ class _signupState extends State<signup> {
                           TextButton(
                             onPressed: (){
                               Navigator.push(context,
-                                  MaterialPageRoute(builder: (context)=>const login())
+                                  MaterialPageRoute(builder: (context)=>const Login())
                               );
                             }
                             ,child:const Text("Login", style: TextStyle(

@@ -72,7 +72,7 @@ class _forgetpassState extends State<ForgetPass> {
                       padding:const EdgeInsets.symmetric(horizontal: 10),
                       child:  Column(
                         children: [
-                          custom_FormTextfield(
+                          CustomFormTextfield(
                             label: "Email",
                             name:false ,
                             controller: emailController ,

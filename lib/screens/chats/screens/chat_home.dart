@@ -118,7 +118,7 @@ class _ChatsState extends State<Chats> {
                   ),
                 ],
               ),
-              custom_FormTextfield(
+              CustomFormTextfield(
                 label: "Email",
                 controller: _emailController,
                 hintText: "Enter your friend's email",
