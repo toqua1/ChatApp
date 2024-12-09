@@ -11,6 +11,19 @@ ThemeMode themeMode=ThemeMode.system;
 int mainColor = 0xffA020F0;
 ChatUser? me;
 
+// Navigation bar colors
+  Color get navigationBarColor {
+    return themeMode == ThemeMode.dark
+        ? Color(mainColor).withOpacity(0.9)
+        : Color(mainColor).withOpacity(0.7);
+  }
+
+  Color get buttonBackgroundColor {
+    return themeMode == ThemeMode.dark
+        ? Colors.black12
+        : Colors.black26;
+  }
+
 getUserDetails()async{
   String myId = FirebaseAuth.instance.currentUser!.uid;
   await FirebaseFirestore.instance
@@ -39,6 +52,7 @@ changeColor(int c)async{
   final SharedPreferences sharedPreferences=
   await SharedPreferences.getInstance();
   mainColor=c;
+
   sharedPreferences.setInt('color', mainColor);
   notifyListeners();
 }

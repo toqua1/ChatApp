@@ -24,7 +24,7 @@ PageController pageController=PageController() ;
 @override
   void initState() {
   Provider.of<ProviderApp>(context, listen: false).getUserDetails();
-    super.initState();
+  super.initState();
   }
 @override
   Widget build(BuildContext context) {
@@ -53,21 +53,27 @@ ChatUser? me=Provider.of<ProviderApp>(context).me;
         index: 0,
         items: const [
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.message,color: Colors.white,),
+            child: Icon(Iconsax.message,
+              // color: Colors.white,
+            ),
             label: 'Chats',
-              labelStyle: TextStyle(color: Colors.white,)
+              // labelStyle: TextStyle(color: Colors.white,)
 
           ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.people,color: Colors.white,),
+            child: Icon(Iconsax.people,
+              // color: Colors.white,
+            ),
             label: 'Groups',
-              labelStyle: TextStyle(color: Colors.white,)
+              // labelStyle: TextStyle(color: Colors.white,)
 
           ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.user,color: Colors.white,),
+            child: Icon(Iconsax.user,
+              // color: Colors.white,
+            ),
             label: 'Contacts',
-              labelStyle: TextStyle(color: Colors.white,)
+              // labelStyle: TextStyle(color: Colors.white,)
 
           ),
           // CurvedNavigationBarItem(
@@ -75,18 +81,16 @@ ChatUser? me=Provider.of<ProviderApp>(context).me;
           //   label: 'Feed',
           // ),
           CurvedNavigationBarItem(
-            child: Icon(Iconsax.setting,color: Colors.white,),
+            child: Icon(Iconsax.setting,
+              // color: Colors.white,
+            ),
             label: 'Setting',
-            labelStyle: TextStyle(color: Colors.white,)
+            // labelStyle: TextStyle(color: Colors.white,)
           ),
         ],
-          color:ProviderApp().themeMode == ThemeMode.dark?
-          Theme.of(context).colorScheme.primary
-        :Theme.of(context).colorScheme.inversePrimary,
+          color: Provider.of<ProviderApp>(context).navigationBarColor,
 
-          buttonBackgroundColor:ProviderApp().themeMode == ThemeMode.dark?
-          Theme.of(context).colorScheme.onSurface
-        :Theme.of(context).colorScheme.onSurface,
+          buttonBackgroundColor: Provider.of<ProviderApp>(context).buttonBackgroundColor,
 
           backgroundColor: Colors.transparent,
           animationCurve: Curves.easeInOut,

@@ -16,6 +16,11 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  List<Color> currentColors = [Colors.indigo ,Colors.pink,Colors.lightGreen,
+    Colors.lime ,Colors.deepPurple,Colors.cyan,Colors.teal,Colors.brown,
+  Colors.greenAccent,Colors.blue,Colors.deepOrangeAccent,Colors.pinkAccent,
+  Color(0xffBFECFF),Color(0xffCDC1FF),Color(0xff659287),
+    Color(0xff789DBC),Color(0xffBC7C7C)];
   @override
   Widget build(BuildContext context) {
     final prov=Provider.of<ProviderApp>(context);
@@ -65,6 +70,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             return AlertDialog(
                               content: SingleChildScrollView(
                                 child: BlockPicker(
+                                  availableColors: currentColors,
                                   onColorChanged: (Color value) {
                                     // print(value.value.toRadixString(16));
                                   prov.changeColor(value.value);

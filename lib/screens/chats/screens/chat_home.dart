@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../models/chat_room_model.dart';
 import '../../../provider/provider.dart';
@@ -37,14 +38,11 @@ class _ChatsState extends State<Chats> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: ProviderApp().themeMode == ThemeMode.dark?
-      Theme.of(context).colorScheme.onPrimary
-          :Theme.of(context).colorScheme.primary,
+      backgroundColor: Provider.of<ProviderApp>(context).navigationBarColor,
       automaticallyImplyLeading: false,
       title: const Text(
         "ChatHub",
         style: TextStyle(
-          color: Colors.white,
           fontSize: 25,
           fontFamily: "exo",
           letterSpacing: 4,
@@ -53,15 +51,15 @@ class _ChatsState extends State<Chats> {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.camera_alt_outlined, color: Colors.white, size: 27),
+          icon: const Icon(Icons.camera_alt_outlined, size: 27),
         ),
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.search, color: Colors.white, size: 30),
+          icon: const Icon(Icons.search, size: 30),
         ),
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.more_vert, color: Colors.white, size: 30),
+          icon: const Icon(Icons.more_vert, size: 30),
         ),
       ],
     );
