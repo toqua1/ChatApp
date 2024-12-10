@@ -6,6 +6,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase/firebase_options.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: value.themeMode,
           theme: ThemeData(
+            textTheme: GoogleFonts.poppinsTextTheme(),
           colorScheme: ColorScheme.fromSeed(
               seedColor: Color(value.mainColor) ,
               brightness: Brightness.light)
@@ -49,16 +51,6 @@ class MyApp extends StatelessWidget {
               ,useMaterial3: true
           ),
           home: const Splash1() ,
-          // StreamBuilder(
-          //   stream: FirebaseAuth.instance.userChanges(),
-          //   builder: (context, snapshot) {
-          //     if(snapshot.hasData) {
-          //       return  const Holding();
-          //     }else {
-          //       return const splash1();
-          //     }
-          //   },
-          // ),
         ),
       ),
     );

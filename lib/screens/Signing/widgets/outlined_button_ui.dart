@@ -15,7 +15,7 @@ class OutlinedButtonUi extends StatelessWidget {
       ),
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context)=>const signup())
+            MaterialPageRoute(builder: (context)=>const SignUp())
         );
       },
       child: Text(

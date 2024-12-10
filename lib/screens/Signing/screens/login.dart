@@ -1,6 +1,5 @@
 import 'package:chatapp/screens/Signing/screens/signup.dart';
 import 'package:chatapp/screens/Signing/widgets/logo_and_title.dart';
-import 'package:chatapp/screens/Signing/widgets/outlined_button_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -8,6 +7,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../../Holding.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../helper/snackBar.dart';
+import '../../splash_screen/widgets/button.dart';
 import 'forget_screen.dart';
 
 class Login extends StatefulWidget {
@@ -28,6 +28,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
+
     return ModalProgressHUD(
       inAsyncCall: isLoading,
       child: Scaffold(
@@ -93,23 +95,9 @@ class _LoginState extends State<Login> {
                               : const Icon(Iconsax.eye),
                         ),
                       ),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ForgetPass()),
-                        );
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 5),
-                        child: Text(
-                          "Forget Password?",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
+                    child: ForgetPassPart(),
                   ),
                     ],
                   ),
@@ -140,10 +128,10 @@ class _LoginState extends State<Login> {
                           setState(() => isLoading = false);
                         }
                       },
-                      child: const Button(),
+                      child: Button(size: size, t1: 'Login',),
                     ),
                     const SizedBox(height: 20),
-                    const OutlinedButtonUi(),
+                    NotHaveAccount(size: size),
                   ],
                 ),
               ),
@@ -163,41 +151,61 @@ class _LoginState extends State<Login> {
 
 }
 
-class Button extends StatelessWidget {
-  const Button({
+class ForgetPassPart extends StatelessWidget {
+  const ForgetPassPart({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-    // padding: const EdgeInsets.all(16),
-    margin: const EdgeInsets.only(left: 25,right: 25),
-    alignment: Alignment.center,
-    // width:64,
-    height: 50,
-    decoration: BoxDecoration(
-      boxShadow: const [
-        BoxShadow(
-          offset: Offset(0.0,0.0),
-          blurRadius: 10,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ForgetPass()),
+        );
+      },
+      child: const Padding(
+        padding: EdgeInsets.only(top: 5),
+        child: Text(
+          "Forget Password?",
+          style: TextStyle(fontWeight: FontWeight.w500 ,color: Colors.black54),
+        ),
+      ),
+    );
+  }
+}
+
+class NotHaveAccount extends StatelessWidget {
+  const NotHaveAccount({
+    super.key, required this.size,
+  });
+  final Size size ;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Text(
+          "Don't have an account ?",
+          style: TextStyle(color: Colors.black54),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SignUp()));
+          },
+          child: const Text(
+            "Sign up",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
+            ),
+          ),
         ),
       ],
-      gradient: const LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-        colors: [
-          Colors.blue,
-          Colors.purple,
-        ],
-      ),
-      color: Colors.black,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Text("Login".toUpperCase(),style: const TextStyle(
-        fontWeight: FontWeight.w600 ,color: Colors
-        .white, fontSize: 20
-    ),),
     );
   }
 }

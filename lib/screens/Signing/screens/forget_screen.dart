@@ -1,8 +1,8 @@
+import 'package:chatapp/screens/splash_screen/widgets/button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import '../../../helper/Text/custom_textfield.dart';
 
 class ForgetPass extends StatefulWidget {
@@ -22,6 +22,8 @@ class _forgetpassState extends State<ForgetPass> {
   GlobalKey<FormState>formKey= GlobalKey() ;
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
+
     return ModalProgressHUD(
       inAsyncCall: isLoading,
       child: Scaffold(
@@ -46,24 +48,8 @@ class _forgetpassState extends State<ForgetPass> {
                     const SizedBox(
                       height: 50,
                     ),
-                    const Center(
-                      child: Column(
-                        children: [
-                                  Image(image: AssetImage("assetsEdited/logo2.png" )
-                                    ,width: 150,
-                                  ),
-                                  Text("Reset Password",style: TextStyle(
-                                    fontSize: 40,fontWeight: FontWeight.bold,
-                                    // color: Colors.white,
-                                  ),),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text("Please enter your email ",style: TextStyle(
-                                    fontSize: 15,fontWeight: FontWeight.w400,
-                                  ),),
-                        ],
-                      ),
+                    Center(
+                      child: LogoAndTitleForgetPass(size: size),
                     ),
                     const SizedBox(
                       height: 60,
@@ -86,7 +72,7 @@ class _forgetpassState extends State<ForgetPass> {
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     InkWell(
                       onTap: () async{
@@ -104,35 +90,7 @@ class _forgetpassState extends State<ForgetPass> {
                          SnackBar(
                         content:Text(error.toString())))});
                       }
-                      ,child: Container(
-                      padding: const EdgeInsets.all(16),
-                      margin: const EdgeInsets.only(left: 25,right: 25),
-                      alignment: Alignment.center,
-                      width: 300,
-                      height:65,
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            offset: Offset(0.0,0.0),
-                            blurRadius: 10,
-                          ),
-                        ],
-                        gradient: const LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Colors.blue,
-                            Colors.purple,
-                          ],
-                        ),
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text("send email".toUpperCase(),style: const
-                      TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 25 ,color: Colors.white,
-                      ),),
-                    ),
+                      ,child: Button(size: size, t1: "Send Email"),
                     ),
                   ],
                 ),
@@ -144,4 +102,36 @@ class _forgetpassState extends State<ForgetPass> {
     );
   }
 
+}
+
+class LogoAndTitleForgetPass extends StatelessWidget {
+  const LogoAndTitleForgetPass({
+    super.key,
+    required this.size,
+  });
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+                Image(image: const AssetImage("assetsEdited/logo2.png" )
+                  ,width: size.width*0.5,
+                ),
+                Text("Reset Password",style: TextStyle(
+                  fontSize: size.width*0.09,
+                  fontWeight: FontWeight.bold,
+                  // color: Colors.white,
+                ),),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text("Please enter your email ",style: TextStyle(
+                  fontSize: size.width*0.045,fontWeight:
+                FontWeight.w400,color: Colors.black54
+                ),),
+      ],
+    );
+  }
 }

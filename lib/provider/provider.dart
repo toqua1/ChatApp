@@ -25,22 +25,25 @@ ChatUser? me;
   }
 
 getUserDetails()async{
-  String myId = FirebaseAuth.instance.currentUser!.uid;
-  await FirebaseFirestore.instance
-  .collection('users')
-  .doc(myId).get()
-  .then((value) => me = ChatUser.fromJson(value.data()!));
-  FirebaseMessaging.instance.requestPermission();
-  await FirebaseMessaging.instance.getToken().then(
-      (value){
-        if(value != null){
-          me!.puchToken = value ;
-          FireAuth().getToken(value);
-        }
-      }
-  );
-  notifyListeners();
+    if(FirebaseAuth.instance.currentUser != null){
+      String myId = FirebaseAuth.instance.currentUser!.uid;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(myId).get()
+          .then((value) => me = ChatUser.fromJson(value.data()!));
+      FirebaseMessaging.instance.requestPermission();
+      await FirebaseMessaging.instance.getToken().then(
+              (value){
+            if(value != null){
+              me!.puchToken = value ;
+              FireAuth().getToken(value);
+            }
+          }
+      );
+      notifyListeners();
+    }
 }
+
 changeMode(bool dark)async{
   final SharedPreferences sharedPreferences=
   await SharedPreferences.getInstance();
