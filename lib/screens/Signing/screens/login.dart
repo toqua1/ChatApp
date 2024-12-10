@@ -18,17 +18,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController emailController=TextEditingController();
-  TextEditingController passwordController =TextEditingController() ;
-  bool showPassword=false;
-  String? email ;
-  String? pass ;
-  bool isLoading=false ;
-  GlobalKey<FormState>formKey= GlobalKey() ;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool showPassword = false;
+  String? email;
+  String? pass;
+  bool isLoading = false;
+  GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    var size=MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
     return ModalProgressHUD(
       inAsyncCall: isLoading,
@@ -43,112 +43,231 @@ class _LoginState extends State<Login> {
             },
           ),
         ),
+        resizeToAvoidBottomInset: true, // Ensure body resizes with keyboard
         body: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              // Logo and title section
-              const Expanded(
-                flex: 3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [LogoAndTitle()],
-                ),
-              ),
-              // Form fields section
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+            key: formKey,
+            child: CustomScrollView(
+              slivers: [
+                // Main layout using Expanded inside SliverFillRemaining
+                SliverFillRemaining(
+                  hasScrollBody: false,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CustomFormTextfield(
-                        label: "Email",
-                        name: false,
-                        controller: emailController,
-                        hintText: "Enter your email",
-                        prefixIcon: const Icon(Iconsax.direct),
-                        onChange: (data) {
-                          email = data;
-                        },
-                      ),
-                      const SizedBox(height: 5),
-                      CustomFormTextfield(
-                        label: "Password",
-                        name: false,
-                        controller: passwordController,
-                        hintText: "Enter your password",
-                        prefixIcon: const Icon(Iconsax.password_check),
-                        onChange: (data) {
-                          pass = data;
-                        },
-                        showPassword: showPassword,
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            setState(() {
-                              showPassword = !showPassword;
-                            });
-                          },
-                          child: showPassword
-                              ? const Icon(Icons.visibility_off)
-                              : const Icon(Iconsax.eye),
+                      // Logo and title section (flex: 3)
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [LogoAndTitle()],
                         ),
                       ),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: ForgetPassPart(),
-                  ),
+                      // Form fields section (flex: 4)
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CustomFormTextfield(
+                                label: "Email",
+                                name: false,
+                                controller: emailController,
+                                hintText: "Enter your email",
+                                prefixIcon: const Icon(Iconsax.direct),
+                                onChange: (data) {
+                                  email = data;
+                                },
+                              ),
+                              const SizedBox(height: 5),
+                              CustomFormTextfield(
+                                label: "Password",
+                                name: false,
+                                controller: passwordController,
+                                hintText: "Enter your password",
+                                prefixIcon: const Icon(Iconsax.password_check),
+                                onChange: (data) {
+                                  pass = data;
+                                },
+                                showPassword: showPassword,
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showPassword = !showPassword;
+                                    });
+                                  },
+                                  child: showPassword
+                                      ? const Icon(Icons.visibility_off)
+                                      : const Icon(Iconsax.eye),
+                                ),
+                              ),
+                              const Align(
+                                alignment: Alignment.centerRight,
+                                child: ForgetPassPart(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Buttons section (flex: 2)
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                if (formKey.currentState!.validate()) {
+                                  setState(() => isLoading = true);
+                                  try {
+                                    await LoginUser();
+                                    showSnackBar(context, 'Success!');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Holding()));
+                                  } on FirebaseAuthException catch (e) {
+                                    String message = e.code == 'user-not-found'
+                                        ? 'No user found for that email.'
+                                        : e.code == 'wrong-password'
+                                            ? 'Wrong password provided for that user.'
+                                            : e.code;
+                                    showSnackBar(context, message);
+                                  }
+                                  setState(() => isLoading = false);
+                                }
+                              },
+                              child: Button(
+                                size: size,
+                                t1: 'Login',
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            NotHaveAccount(size: size),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
-              // Buttons section
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        if (formKey.currentState!.validate()) {
-                          setState(() => isLoading = true);
-                          try {
-                            await LoginUser();
-                            showSnackBar(context, 'Success!');
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Holding()));
-                          } on FirebaseAuthException catch (e) {
-                            String message = e.code == 'user-not-found'
-                                ? 'No user found for that email.'
-                                : e.code == 'wrong-password'
-                                ? 'Wrong password provided for that user.'
-                                : e.code;
-                            showSnackBar(context, message);
-                          }
-                          setState(() => isLoading = false);
-                        }
-                      },
-                      child: Button(size: size, t1: 'Login',),
-                    ),
-                    const SizedBox(height: 20),
-                    NotHaveAccount(size: size),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            )
+            // child: SingleChildScrollView(
+            //   child: ConstrainedBox(
+            //     constraints: BoxConstraints(
+            //       minHeight: size.height*0.8,
+            //     ),
+            //     child: IntrinsicHeight(
+            //       child: Column(
+            //         children: [
+            //           // Logo and title section
+            //           Expanded(
+            //             flex: 3,
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: const [LogoAndTitle()],
+            //             ),
+            //           ),
+            //           // Form fields section
+            //           Expanded(
+            //             flex: 4,
+            //             child: Padding(
+            //               padding: const EdgeInsets.symmetric(horizontal: 10),
+            //               child: Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   CustomFormTextfield(
+            //                     label: "Email",
+            //                     name: false,
+            //                     controller: emailController,
+            //                     hintText: "Enter your email",
+            //                     prefixIcon: const Icon(Iconsax.direct),
+            //                     onChange: (data) {
+            //                       email = data;
+            //                     },
+            //                   ),
+            //                   const SizedBox(height: 5),
+            //                   CustomFormTextfield(
+            //                     label: "Password",
+            //                     name: false,
+            //                     controller: passwordController,
+            //                     hintText: "Enter your password",
+            //                     prefixIcon: const Icon(Iconsax.password_check),
+            //                     onChange: (data) {
+            //                       pass = data;
+            //                     },
+            //                     showPassword: showPassword,
+            //                     suffixIcon: InkWell(
+            //                       onTap: () {
+            //                         setState(() {
+            //                           showPassword = !showPassword;
+            //                         });
+            //                       },
+            //                       child: showPassword
+            //                           ? const Icon(Icons.visibility_off)
+            //                           : const Icon(Iconsax.eye),
+            //                     ),
+            //                   ),
+            //                   const Align(
+            //                     alignment: Alignment.centerRight,
+            //                     child: ForgetPassPart(),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //           // Buttons section
+            //           Expanded(
+            //             flex: 2,
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 InkWell(
+            //                   onTap: () async {
+            //                     if (formKey.currentState!.validate()) {
+            //                       setState(() => isLoading = true);
+            //                       try {
+            //                         await LoginUser();
+            //                         showSnackBar(context, 'Success!');
+            //                         Navigator.push(context,
+            //                             MaterialPageRoute(builder: (context) => Holding()));
+            //                       } on FirebaseAuthException catch (e) {
+            //                         String message = e.code == 'user-not-found'
+            //                             ? 'No user found for that email.'
+            //                             : e.code == 'wrong-password'
+            //                             ? 'Wrong password provided for that user.'
+            //                             : e.code;
+            //                         showSnackBar(context, message);
+            //                       }
+            //                       setState(() => isLoading = false);
+            //                     }
+            //                   },
+            //                   child: Button(
+            //                     size: size,
+            //                     t1: 'Login',
+            //                   ),
+            //                 ),
+            //                 const SizedBox(height: 20),
+            //                 NotHaveAccount(size: size),
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            ),
       ),
     );
   }
 
   Future<void> LoginUser() async {
     final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email!,
-        password: pass! ,
+      email: email!,
+      password: pass!,
     );
   }
-
 }
 
 class ForgetPassPart extends StatelessWidget {
@@ -169,7 +288,7 @@ class ForgetPassPart extends StatelessWidget {
         padding: EdgeInsets.only(top: 5),
         child: Text(
           "Forget Password?",
-          style: TextStyle(fontWeight: FontWeight.w500 ,color: Colors.black54),
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black54),
         ),
       ),
     );
@@ -178,9 +297,10 @@ class ForgetPassPart extends StatelessWidget {
 
 class NotHaveAccount extends StatelessWidget {
   const NotHaveAccount({
-    super.key, required this.size,
+    super.key,
+    required this.size,
   });
-  final Size size ;
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
