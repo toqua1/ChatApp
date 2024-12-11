@@ -41,7 +41,7 @@ class CustomFormTextfield extends StatelessWidget {
                   // color
                   blurRadius: 12, // Spread of the glow
                   spreadRadius: 3, // Intensity of the glow
-                  offset: Offset(0, 0), // Centered glow
+                  offset: const Offset(0, 0), // Centered glow
                 ),
               ],
             ),
@@ -55,18 +55,18 @@ class CustomFormTextfield extends StatelessWidget {
               // ),
               decoration: InputDecoration(
                 contentPadding:const EdgeInsets.all(16),
-                 focusedBorder:
-                 OutlineInputBorder(
+                 focusedBorder: OutlineInputBorder(
                    borderRadius: BorderRadius.circular(15),
-                   // borderSide: const BorderSide(width: 2),
+                   borderSide: BorderSide.none,
                  ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none
                   // borderSide: BorderSide(color:name? Colors.black54:Theme.of(context).colorScheme.outline,width: 2),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.red,width: 2),
+                  borderSide: const BorderSide(color: Colors.red,width: 2),
                 ),
                 suffixIcon: suffixIcon,
                 // suffixIconColor: kPrimaryColor,

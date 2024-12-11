@@ -238,7 +238,7 @@ class AlreadyHaveAccount extends StatelessWidget {
       children: [
         const Text(
           "Already have an account ?",
-          style: TextStyle(color: Colors.white70),
+          // style: TextStyle(color: Colors.white70),
         ),
         TextButton(
           onPressed: () {

@@ -1,5 +1,7 @@
+import 'package:chatapp/provider/provider.dart';
 import 'package:chatapp/screens/Signing/widgets/animated_gradient_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Button extends StatelessWidget {
   const Button({
@@ -15,7 +17,10 @@ class Button extends StatelessWidget {
       height: 55,
       child: AnimatedGradientBorder(
         topColor: Color(0xffad5389),
-        bottomColor: Colors.black,
+        bottomColor:
+        Provider.of<ProviderApp>(context).themeMode == ThemeMode.dark
+            ? Colors.black
+            : Colors.white,
         thickness: 7,
         radius: 20,
         blurRadius: 15,

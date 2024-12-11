@@ -171,6 +171,11 @@ class _AnimatedGradientBorderState extends State<AnimatedGradientBorder>
       },
     );
   }
+  @override
+  void dispose() {
+    _controller.dispose(); // Properly dispose of the AnimationController
+    super.dispose();
+  }
 }
 
 class _CenterCutPath extends CustomClipper<Path> {

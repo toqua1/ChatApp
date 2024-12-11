@@ -117,6 +117,7 @@ class _LoginState extends State<Login> {
                                   try {
                                     await LoginUser();
                                     showSnackBar(context, 'Success!');
+                                    await Future.delayed(const Duration(seconds: 3)); // Add delay for 3 seconds
                                     Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
