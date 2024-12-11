@@ -71,8 +71,8 @@ class _forgetpassState extends State<ForgetPass> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: size.height *0.12,
                     ),
                     InkWell(
                       onTap: () async{
@@ -120,7 +120,7 @@ class LogoAndTitleForgetPass extends StatelessWidget {
                   ,width: size.width*0.5,
                 ),
                 Text("Reset Password",style: TextStyle(
-                  fontSize: size.width*0.09,
+                  fontSize: size.width*0.075,
                   fontWeight: FontWeight.bold,
                   // color: Colors.white,
                 ),),
@@ -128,8 +128,9 @@ class LogoAndTitleForgetPass extends StatelessWidget {
                   height: 20,
                 ),
                 Text("Please enter your email ",style: TextStyle(
-                  fontSize: size.width*0.045,fontWeight:
-                FontWeight.w400,color: Colors.black54
+                  fontSize: size.width*0.035,fontWeight:
+                FontWeight.w400,
+                    // color: Colors.black54
                 ),),
       ],
     );

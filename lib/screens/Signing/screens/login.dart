@@ -1,5 +1,4 @@
 import 'package:chatapp/screens/Signing/screens/signup.dart';
-import 'package:chatapp/screens/Signing/widgets/animated_gradient_border.dart';
 import 'package:chatapp/screens/Signing/widgets/logo_and_title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -137,26 +136,8 @@ class _LoginState extends State<Login> {
                                 }
                               },
                               child:Center(
-                                child: SizedBox(
-                                  width: size.width - (0.3*size.width),
-                                  height: 55,
-                                  child: AnimatedGradientBorder(
-                                    topColor: Color(0xffad5389),
-                                    bottomColor: Colors.black,
-                                    thickness: 7,
-                                    radius: 20,
-                                    blurRadius: 15,
-                                    spreadRadius: 2,
-                                    duration: const Duration(milliseconds: 5),
-                                    child:
-                                      Button(
-                                      size: size,
-                                      t1: 'Login',
-                                    ),
-                                  ),
-                                ),
-                              )
-
+                             child: Button(size: size, t1: 'Login'),
+                              ),
                             ),
                             const SizedBox(height: 20),
                             NotHaveAccount(size: size),
@@ -228,11 +209,11 @@ class NotHaveAccount extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const SignUp()));
           },
-          child: const Text(
+          child: Text(
             "Sign up",
             style: TextStyle(
               fontWeight: FontWeight.w800,
-              // color: Colors.black,
+              color: Colors.purple.shade300,
             ),
           ),
         ),

@@ -28,72 +28,46 @@ class _SignUpState extends State<SignUp> {
   bool isLoading = false;
   GlobalKey<FormState> formKey = GlobalKey();
   @override
+  @override
   Widget build(BuildContext context) {
-    var size=MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
     return ModalProgressHUD(
       inAsyncCall: isLoading,
-      child: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assetsEdited/img6.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            //not used here
-            sigmaX: 0,
-            sigmaY: 0,
-          ),
+      // child: Container(
+      //   decoration: const BoxDecoration(
+      //     image: DecorationImage(
+      //       image: AssetImage("assetsEdited/back2.jpg"),
+      //       fit: BoxFit.cover,
+      //     ),
+      //   ),
+      //   child: BackdropFilter(
+      //     filter: ImageFilter.blur(
+      //       sigmaX: 0,
+      //       sigmaY: 0,
+      //     ),
           child: Scaffold(
-            backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.transparent,
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios,
-                    color: Colors.black, size: 20),
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
             ),
-            body: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Column(
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Column(
                     children: [
-                      const SizedBox(
-                        height: 50,
+                      const Center(
+                        child: SignTitleAndSub(),
                       ),
-                      Center(
-                        child: Column(
-                          children: [
-                            const Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Create your account",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 80,
+                      SizedBox(
+                        height: size.height * 0.1,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -135,45 +109,45 @@ class _SignUpState extends State<SignUp> {
                                 },
                                 showPassword: showPassword,
                                 suffixIcon: InkWell(
-                                    onTap: () {
-                                      if (showPassword == false) {
-                                        showPassword = true;
-                                      } else {
-                                        showPassword = false;
-                                      }
-                                      showPassword = showPassword;
-                                      setState(() {});
-                                    },
-                                    child: showPassword
-                                        ? const Icon(
-                                            Icons.visibility_off,
-                                          )
-                                        : const Icon(Iconsax.eye)),
+                                  onTap: () {
+                                    setState(() {
+                                      showPassword = !showPassword;
+                                    });
+                                  },
+                                  child: Icon(
+                                    showPassword ? Icons.visibility_off : Iconsax.eye,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                    ],
+                  ),
+                ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Spacer(),
                       InkWell(
                         onTap: () async {
                           if (formKey.currentState!.validate()) {
-                            isLoading = true;
-                            setState(() {});
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: email!, password: pass!)
-                                .then((value) async {
-                              await FirebaseAuth.instance.currentUser!
-                                  .updateDisplayName(nameController.text)
-                                  .then((value) => FireAuth.createUser());
-                              showSnackBar(context, 'Created Successfully!');
-                              Navigator.pop(context);
-                            }).onError(
-                                    (FirebaseAuthException error, stackTrace) {
-                              // showSnackBar(context, error.toString()) ;
+                            setState(() => isLoading = true);
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                  email: email!, password: pass!)
+                                  .then((value) async {
+                                await FirebaseAuth.instance.currentUser!
+                                    .updateDisplayName(nameController.text);
+                                FireAuth.createUser();
+                                showSnackBar(context, 'Created Successfully!');
+                                Navigator.pop(context);
+                              });
+                            } on FirebaseAuthException catch (error) {
                               if (error.code == 'weak-password') {
                                 showSnackBar(context, 'Weak Password.');
                               } else if (error.code == 'email-already-in-use') {
@@ -182,18 +156,14 @@ class _SignUpState extends State<SignUp> {
                               } else {
                                 showSnackBar(context, error.code);
                               }
-                            });
-                            // isLoading=false ;
-                            // setState(() {
-                            //
-                            // });
+                            } finally {
+                              setState(() => isLoading = false);
+                            }
                           } else {
-                            showSnackBar(context, "Validation Error! ");
+                            showSnackBar(context, "Validation Error!");
                           }
-                          isLoading = false;
-                          setState(() {});
                         },
-                        child: Button(size: size, t1:  "Register",),
+                        child: Button(size: size, t1: "Register"),
                       ),
                       const SizedBox(
                         height: 10,
@@ -201,14 +171,15 @@ class _SignUpState extends State<SignUp> {
                       AlreadyHaveAccount(size: size),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
+        // ),
+      // ),
     );
   }
+
 
   Future<void> RegisterUser() async {
     UserCredential user = await FirebaseAuth.instance
@@ -217,6 +188,39 @@ class _SignUpState extends State<SignUp> {
           password: pass!,
         )
         .then((value) async => await FireAuth.createUser());
+  }
+}
+
+class SignTitleAndSub extends StatelessWidget {
+  const SignTitleAndSub({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        Text(
+          "Sign Up",
+          style: TextStyle(
+            fontSize: 42,
+            fontWeight: FontWeight.bold,
+            // color: Colors.white,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          "Create your account",
+          style: TextStyle(
+            fontSize: 13,
+            // color: Colors.grey[100],
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -234,18 +238,18 @@ class AlreadyHaveAccount extends StatelessWidget {
       children: [
         const Text(
           "Already have an account ?",
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: Colors.white70),
         ),
         TextButton(
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const Login()));
           },
-          child: const Text(
+          child: Text(
             "Login",
             style: TextStyle(
                 fontWeight: FontWeight.w800,
-                color: Colors.black,
+                color: Colors.purple.shade300,
             ),
           ),
         ),

@@ -32,49 +32,63 @@ class CustomFormTextfield extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextFormField(
-            validator: (data){
-              if(data!.isEmpty)
-                return "Field is required" ;
-            },
-            style: TextStyle(
-                color:name? Colors.black54:Theme.of(context).colorScheme.outline
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.purpleAccent.withOpacity(0.3), // Adjust glow
+                  // color
+                  blurRadius: 12, // Spread of the glow
+                  spreadRadius: 3, // Intensity of the glow
+                  offset: Offset(0, 0), // Centered glow
+                ),
+              ],
             ),
-            decoration: InputDecoration(
-              contentPadding:const EdgeInsets.all(16),
-               focusedBorder:
-               OutlineInputBorder(
-                 borderRadius: BorderRadius.circular(15),
-                 borderSide: BorderSide(width: 2),
-               ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color:name? Colors.black54:Theme.of(context).colorScheme.outline,width: 2),
+            child: TextFormField(
+              validator: (data){
+                if(data!.isEmpty)
+                  return "Field is required" ;
+              },
+              // style: TextStyle(
+              //     color:name? Colors.black54:Theme.of(context).colorScheme.outline
+              // ),
+              decoration: InputDecoration(
+                contentPadding:const EdgeInsets.all(16),
+                 focusedBorder:
+                 OutlineInputBorder(
+                   borderRadius: BorderRadius.circular(15),
+                   // borderSide: const BorderSide(width: 2),
+                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  // borderSide: BorderSide(color:name? Colors.black54:Theme.of(context).colorScheme.outline,width: 2),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide(color: Colors.red,width: 2),
+                ),
+                suffixIcon: suffixIcon,
+                // suffixIconColor: kPrimaryColor,
+                prefixIcon: prefixIcon,
+                // prefixIconColor: kPrimaryColor,
+                fillColor: Theme.of(context).colorScheme.surface,
+                filled: true,
+                label: Text(label),
+                // labelStyle: TextStyle(color:name? Colors.black54:Theme.of(context).colorScheme.outline),
+                hintText: hintText,
+                // hintStyle: TextStyle(
+                //   color:name? Colors.black54:Theme.of(context).colorScheme.outline
+                //   ,fontWeight: FontWeight.w300,
+                //   // color: Colors.grey,
+                //   fontSize: 15,
+                // ),
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: Colors.red,width: 2),
-              ),
-              suffixIcon: suffixIcon,
-              // suffixIconColor: kPrimaryColor,
-              prefixIcon: prefixIcon,
-              // prefixIconColor: kPrimaryColor,
-              fillColor: Colors.transparent,
-              filled: true,
-              label: Text(label),
-              labelStyle: TextStyle(color:name? Colors.black54:Theme.of(context).colorScheme.outline),
-              hintText: hintText,
-              hintStyle: TextStyle(
-                color:name? Colors.black54:Theme.of(context).colorScheme.outline
-                ,fontWeight: FontWeight.w300,
-                // color: Colors.grey,
-                fontSize: 15,
-              ),
-            ),
-            onChanged: onChange,
-            controller: controller,
-            obscureText: showPassword,
+              onChanged: onChange,
+              controller: controller,
+              obscureText: showPassword,
 
+            ),
           ),
           const SizedBox(
             height: 10,
