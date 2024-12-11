@@ -2,7 +2,6 @@ import 'package:chatapp/cubits/search_cubit/get_search_text_cubit.dart';
 import 'package:chatapp/screens/contacts/widgets/bottom_sheet_ui.dart';
 import 'package:chatapp/screens/contacts/widgets/contacts_list_view.dart';
 import 'package:chatapp/screens/contacts/widgets/custom_app_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';

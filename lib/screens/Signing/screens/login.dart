@@ -1,4 +1,5 @@
 import 'package:chatapp/screens/Signing/screens/signup.dart';
+import 'package:chatapp/screens/Signing/widgets/animated_gradient_border.dart';
 import 'package:chatapp/screens/Signing/widgets/logo_and_title.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +37,7 @@ class _LoginState extends State<Login> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, size: 20),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+         automaticallyImplyLeading: false,
         ),
         resizeToAvoidBottomInset: true, // Ensure body resizes with keyboard
         body: Form(
@@ -54,11 +50,11 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: [
                       // Logo and title section (flex: 3)
-                      Expanded(
+                      const Expanded(
                         flex: 3,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [LogoAndTitle()],
+                          children: [LogoAndTitle()],
                         ),
                       ),
                       // Form fields section (flex: 4)
@@ -122,10 +118,13 @@ class _LoginState extends State<Login> {
                                   try {
                                     await LoginUser();
                                     showSnackBar(context, 'Success!');
-                                    Navigator.push(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Holding()));
+                                            builder: (context) =>const Holding
+                                            ()),
+                                          (Route<dynamic> route) => false, // Removes all routes
+                                    );
                                   } on FirebaseAuthException catch (e) {
                                     String message = e.code == 'user-not-found'
                                         ? 'No user found for that email.'
@@ -137,10 +136,27 @@ class _LoginState extends State<Login> {
                                   setState(() => isLoading = false);
                                 }
                               },
-                              child: Button(
-                                size: size,
-                                t1: 'Login',
-                              ),
+                              child:Center(
+                                child: SizedBox(
+                                  width: size.width - (0.3*size.width),
+                                  height: 55,
+                                  child: AnimatedGradientBorder(
+                                    topColor: Color(0xffad5389),
+                                    bottomColor: Colors.black,
+                                    thickness: 7,
+                                    radius: 20,
+                                    blurRadius: 15,
+                                    spreadRadius: 2,
+                                    duration: const Duration(milliseconds: 5),
+                                    child:
+                                      Button(
+                                      size: size,
+                                      t1: 'Login',
+                                    ),
+                                  ),
+                                ),
+                              )
+
                             ),
                             const SizedBox(height: 20),
                             NotHaveAccount(size: size),
@@ -152,111 +168,6 @@ class _LoginState extends State<Login> {
                 ),
               ],
             )
-            // child: SingleChildScrollView(
-            //   child: ConstrainedBox(
-            //     constraints: BoxConstraints(
-            //       minHeight: size.height*0.8,
-            //     ),
-            //     child: IntrinsicHeight(
-            //       child: Column(
-            //         children: [
-            //           // Logo and title section
-            //           Expanded(
-            //             flex: 3,
-            //             child: Column(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: const [LogoAndTitle()],
-            //             ),
-            //           ),
-            //           // Form fields section
-            //           Expanded(
-            //             flex: 4,
-            //             child: Padding(
-            //               padding: const EdgeInsets.symmetric(horizontal: 10),
-            //               child: Column(
-            //                 mainAxisAlignment: MainAxisAlignment.center,
-            //                 children: [
-            //                   CustomFormTextfield(
-            //                     label: "Email",
-            //                     name: false,
-            //                     controller: emailController,
-            //                     hintText: "Enter your email",
-            //                     prefixIcon: const Icon(Iconsax.direct),
-            //                     onChange: (data) {
-            //                       email = data;
-            //                     },
-            //                   ),
-            //                   const SizedBox(height: 5),
-            //                   CustomFormTextfield(
-            //                     label: "Password",
-            //                     name: false,
-            //                     controller: passwordController,
-            //                     hintText: "Enter your password",
-            //                     prefixIcon: const Icon(Iconsax.password_check),
-            //                     onChange: (data) {
-            //                       pass = data;
-            //                     },
-            //                     showPassword: showPassword,
-            //                     suffixIcon: InkWell(
-            //                       onTap: () {
-            //                         setState(() {
-            //                           showPassword = !showPassword;
-            //                         });
-            //                       },
-            //                       child: showPassword
-            //                           ? const Icon(Icons.visibility_off)
-            //                           : const Icon(Iconsax.eye),
-            //                     ),
-            //                   ),
-            //                   const Align(
-            //                     alignment: Alignment.centerRight,
-            //                     child: ForgetPassPart(),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ),
-            //           // Buttons section
-            //           Expanded(
-            //             flex: 2,
-            //             child: Column(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: [
-            //                 InkWell(
-            //                   onTap: () async {
-            //                     if (formKey.currentState!.validate()) {
-            //                       setState(() => isLoading = true);
-            //                       try {
-            //                         await LoginUser();
-            //                         showSnackBar(context, 'Success!');
-            //                         Navigator.push(context,
-            //                             MaterialPageRoute(builder: (context) => Holding()));
-            //                       } on FirebaseAuthException catch (e) {
-            //                         String message = e.code == 'user-not-found'
-            //                             ? 'No user found for that email.'
-            //                             : e.code == 'wrong-password'
-            //                             ? 'Wrong password provided for that user.'
-            //                             : e.code;
-            //                         showSnackBar(context, message);
-            //                       }
-            //                       setState(() => isLoading = false);
-            //                     }
-            //                   },
-            //                   child: Button(
-            //                     size: size,
-            //                     t1: 'Login',
-            //                   ),
-            //                 ),
-            //                 const SizedBox(height: 20),
-            //                 NotHaveAccount(size: size),
-            //               ],
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
             ),
       ),
     );
@@ -288,7 +199,7 @@ class ForgetPassPart extends StatelessWidget {
         padding: EdgeInsets.only(top: 5),
         child: Text(
           "Forget Password?",
-          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black54),
+          style: TextStyle(fontWeight: FontWeight.w500,),
         ),
       ),
     );
@@ -310,7 +221,7 @@ class NotHaveAccount extends StatelessWidget {
       children: [
         const Text(
           "Don't have an account ?",
-          style: TextStyle(color: Colors.black54),
+          // style: TextStyle(color: Colors.black54),
         ),
         TextButton(
           onPressed: () {
@@ -321,7 +232,7 @@ class NotHaveAccount extends StatelessWidget {
             "Sign up",
             style: TextStyle(
               fontWeight: FontWeight.w800,
-              color: Colors.black,
+              // color: Colors.black,
             ),
           ),
         ),

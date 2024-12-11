@@ -10,29 +10,30 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(16),
-      // margin: const EdgeInsets.only(left: 25,right: 25),
       alignment: Alignment.center,
       width:size.width - (0.25*size.width),
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
-            // offset: Offset(-5,-5),
+            // offset: Offset(0,0),
             blurRadius: 20,
           ),
         ],
-        gradient: const LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
+        gradient:  LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
-            Colors.blue,
-            Colors.purple,
+            Colors.pink.shade300,
+            Colors.deepPurpleAccent
+            // Color(0xffad5389),
+            // Color(0xff3c1053)
+            // Color(Provider.of<ProviderApp>(context).mainColor),
           ],
         ),
         color: Colors.black,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         t1,

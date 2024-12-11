@@ -1,6 +1,7 @@
 import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/screens/chats/screens/chatRoom.dart';
+import 'package:chatapp/screens/chats/widgets/chat_card_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -15,7 +16,7 @@ class ContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: const CircleAvatar(),
+        leading: ChatCardProfile(chatUser: user),
         title: Text(user.name!),
         subtitle: Text(
           user.about!,
