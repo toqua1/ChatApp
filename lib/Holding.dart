@@ -29,6 +29,8 @@ PageController pageController=PageController() ;
 @override
   Widget build(BuildContext context) {
 ChatUser? me=Provider.of<ProviderApp>(context).me;
+Color mainColor =Provider.of<ProviderApp>(context).navigationBarColor;
+Color backgroundColor = Provider.of<ProviderApp>(context).buttonBackgroundColor.withOpacity(0.28) ;
     return Scaffold(
       body:me == null?
        const Center(child: CircularProgressIndicator(),)
@@ -88,9 +90,9 @@ ChatUser? me=Provider.of<ProviderApp>(context).me;
             // labelStyle: TextStyle(color: Colors.white,)
           ),
         ],
-          color: Provider.of<ProviderApp>(context).navigationBarColor,
+          color: mainColor,
 
-          buttonBackgroundColor: Provider.of<ProviderApp>(context).buttonBackgroundColor,
+          buttonBackgroundColor: backgroundColor,
 
           backgroundColor: Colors.transparent,
           animationCurve: Curves.easeInOut,

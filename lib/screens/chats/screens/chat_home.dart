@@ -38,7 +38,7 @@ class _ChatsState extends State<Chats> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Provider.of<ProviderApp>(context).navigationBarColor,
+      backgroundColor: Theme.of(context).colorScheme.surface  ,
       automaticallyImplyLeading: false,
       title: const Text(
         "ChatHub",
