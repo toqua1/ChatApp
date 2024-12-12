@@ -34,6 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor =Provider.of<ProviderApp>(context).navigationBarColor;
+    Color backgroundColor = Provider.of<ProviderApp>(context)
+        .buttonBackgroundColor;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -45,13 +48,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     clipper: MyCustomClipper(),
                     child: Container(
                       height: 250,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment.bottomRight,
-                          end: Alignment.topLeft,
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
                           colors: [
-                            Colors.blue,
-                            Colors.purple,
+                            // Colors.blue,
+                            // Colors.purple,
+                            backgroundColor,
+                            mainColor,
                           ],
                         ),
                       ),
@@ -69,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: 190,
                                 height: 190,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.surface,
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                               ),
