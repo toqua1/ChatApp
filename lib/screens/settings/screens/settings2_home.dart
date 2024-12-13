@@ -41,8 +41,9 @@ class _SettingScreenState extends State<SettingScreen> {
                   title: Text(prov.me!.name.toString()),
                   trailing: IconButton(
                     onPressed: (){
+                      print(prov.me!.email!.toString());
                       Navigator.push(context, MaterialPageRoute(builder:
-                          (context)=>const QRCode()));
+                          (context)=>QRCode(email: prov.me!.email!.toString())));
                     },
                     icon: const Icon(Iconsax.scan_barcode),
                   ),
@@ -71,7 +72,7 @@ class ProfileCard extends StatelessWidget {
         title: const Text("Profile"),
         leading: const Icon(Iconsax.user),
         trailing: const Icon(Icons.arrow_forward_ios),
-        onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen())),
+        onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfileScreen())),
       ),
     );
   }
