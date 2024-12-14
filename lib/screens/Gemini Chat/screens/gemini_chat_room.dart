@@ -13,9 +13,22 @@ class GeminiChatRoom extends StatefulWidget {
 }
 
 class _GeminiChatRoomState extends State<GeminiChatRoom> {
+  final ScrollController _scrollController = ScrollController();
   final TextEditingController _controller = TextEditingController();
   final List<GeminiMessage> _messages = [];
   bool _isLoading = false;
+
+  void _scrollDown() {
+    WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(
+          milliseconds: 750,
+        ),
+        curve: Curves.easeOutCirc,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +43,7 @@ class _GeminiChatRoomState extends State<GeminiChatRoom> {
         children: [
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
                 itemCount: _messages.length,
                 itemBuilder: (context, index){
                   final message = _messages[index];
@@ -150,6 +164,7 @@ class _GeminiChatRoomState extends State<GeminiChatRoom> {
       setState(() {
         _messages.add(GeminiMessage(text: response.text!, isUser: false));
         _isLoading = false;
+        _scrollDown();
       });
 
     }catch(e){
