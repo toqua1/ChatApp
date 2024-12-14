@@ -1,4 +1,6 @@
 import 'package:chatapp/firebase/fire_database.dart';
+import 'package:chatapp/screens/Gemini%20Chat/screens/gemini_chat_room.dart';
+import 'package:chatapp/screens/Gemini%20Chat/widgets/gemini_chat_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,12 @@ class _ChatsState extends State<Chats> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(15),
-          child: _buildChatList(),
+          child: Column(
+            children: [
+              const GeminiChatCard(),
+              Expanded(child: _buildChatList()),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -38,7 +45,7 @@ class _ChatsState extends State<Chats> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.surface  ,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       automaticallyImplyLeading: false,
       title: const Text(
         "ChatHub",
@@ -70,9 +77,9 @@ class _ChatsState extends State<Chats> {
       stream: FirebaseFirestore.instance
           .collection('rooms')
           .where(
-        'members',
-        arrayContains: FirebaseAuth.instance.currentUser!.uid,
-      )
+            'members',
+            arrayContains: FirebaseAuth.instance.currentUser!.uid,
+          )
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -128,11 +135,13 @@ class _ChatsState extends State<Chats> {
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
                 ),
                 onPressed: _createChatRoom,
                 child: const Text("Create Chat"),
