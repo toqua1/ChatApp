@@ -49,7 +49,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
                 const ProfileCard(),
-                ThemeCard(currentColors: currentColors, prov: prov),
+                ThemeCard(currentColors: Constants.currentColors, prov: prov),
                 ThemeModeCard(prov: prov),
                 const SignOutCard(),
               ],
