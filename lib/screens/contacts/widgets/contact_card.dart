@@ -1,10 +1,11 @@
-import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/screens/chats/screens/chatRoom.dart';
 import 'package:chatapp/screens/chats/widgets/chat_card_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../../../services/firebase/fire_database.dart';
 
 class ContactCard extends StatelessWidget {
   final ChatUser user ;

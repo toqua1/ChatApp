@@ -1,14 +1,11 @@
-import 'package:chatapp/firebase/fire_database.dart';
-import 'package:chatapp/screens/Gemini%20Chat/screens/gemini_chat_room.dart';
 import 'package:chatapp/screens/Gemini%20Chat/widgets/gemini_chat_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../models/chat_room_model.dart';
-import '../../../provider/provider.dart';
+import '../../../services/firebase/fire_database.dart';
 import '../widgets/chat_card.dart';
 
 class Chats extends StatefulWidget {

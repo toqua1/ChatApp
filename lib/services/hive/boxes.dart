@@ -1,8 +1,9 @@
 
 import 'package:chatapp/constants/constants.dart';
-import 'package:chatapp/hive/chat_history.dart';
-import 'package:chatapp/hive/gemini_user_model.dart';
 import 'package:hive/hive.dart';
+
+import 'chat_history.dart';
+import 'gemini_user_model.dart';
 
 class Boxes {
   //get chat history box

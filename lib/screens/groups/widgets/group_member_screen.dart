@@ -1,4 +1,4 @@
-import 'package:chatapp/firebase/fire_database.dart';
+import '../../../services/firebase/fire_database.dart';
 import 'package:chatapp/models/group_model.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/screens/groups/widgets/group_edit.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../firebase/fire_database.dart';
+import '../../../services/firebase/fire_database.dart';
 import '../screens/chatRoom.dart';
 
 class GifHey extends StatelessWidget {

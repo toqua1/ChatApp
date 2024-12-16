@@ -1,4 +1,3 @@
-import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/models/group_model.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:chatapp/screens/groups/widgets/group_member_screen.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../services/firebase/fire_database.dart';
 import '../widgets/group_message_card.dart';
 
 class GroupRoom extends StatefulWidget {

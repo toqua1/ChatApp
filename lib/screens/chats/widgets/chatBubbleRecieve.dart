@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../../../firebase/fire_database.dart';
 import '../../../helper/date_time.dart';
 import '../../../helper/photo_view.dart';
 import '../../../models/messageModel.dart';
+import '../../../services/firebase/fire_database.dart';
 
 class ChatBubbleReceive extends StatefulWidget {
   const ChatBubbleReceive({

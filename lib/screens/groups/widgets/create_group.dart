@@ -1,10 +1,10 @@
-import 'package:chatapp/firebase/fire_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../models/userModel.dart';
+import '../../../services/firebase/fire_database.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({super.key});

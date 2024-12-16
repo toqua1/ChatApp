@@ -27,14 +27,14 @@ class ChatUser {
     return ChatUser(
         id: json['id'] ?? "",/*if null return empty*/
         name: json['name'],
-        email: json['email'],
+        email: json['email'] ,
         about: json['about'],
-        image: json['image'],
-        createdAt: json['created_at'],
-        lastActivated: json['last_activated'],
-        puchToken: json['puch_token'],
+        image: json['image'] ?? "",
+        createdAt: json['created_at'] ?? "",
+        lastActivated: json['last_activated'] ?? "",
+        puchToken: json['puch_token'] ?? "",
         online: json['online'],
-        myUsers: json['my_users']
+        myUsers: json['my_users'] ??[]
     );
   }
 

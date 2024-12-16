@@ -6,8 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
-import '../models/chat_room_model.dart';
 import 'package:http/http.dart' as http;
+
+import '../../models/chat_room_model.dart';
 
 class FireData {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:chatapp/firebase/fire_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +7,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../helper/Text/custom_textfield.dart';
 import '../../../helper/snackBar.dart';
+import '../../../services/firebase/fire_auth.dart';
 import '../../splash_screen/widgets/button.dart';
 import 'login.dart';
 

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:chatapp/Holding.dart';
-import 'package:chatapp/firebase/fire_auth.dart';
-import 'package:chatapp/helper/notification_helper.dart';
 import 'package:chatapp/screens/onBoarding_screen/screen/onboarding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../../helper/size_config.dart';
 import '../../../provider/provider.dart';
+import '../../../services/firebase/fire_auth.dart';
 import '../widgets/logo_and_title.dart';
 
 class Splash1 extends StatefulWidget {

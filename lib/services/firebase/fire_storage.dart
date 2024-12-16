@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:chatapp/firebase/fire_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import '../models/userModel.dart';
+
+import '../../models/userModel.dart';
+import 'fire_database.dart';
 
 class FireStorage {
   final FirebaseStorage fireStorage = FirebaseStorage.instance;

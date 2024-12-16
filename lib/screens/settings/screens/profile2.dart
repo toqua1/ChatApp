@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'package:chatapp/firebase/fire_database.dart';
-import 'package:chatapp/firebase/fire_storage.dart';
+import '../../../services/firebase/fire_database.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../helper/MyCustomClipper.dart';
+import '../../../services/firebase/fire_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

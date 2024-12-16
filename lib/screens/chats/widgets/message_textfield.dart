@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../firebase/fire_storage.dart';
+import '../../../services/firebase/fire_storage.dart';
 import '../screens/chatRoom.dart';
 
 class MessageTextField extends StatelessWidget {

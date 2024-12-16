@@ -1,5 +1,4 @@
 import 'package:chatapp/helper/date_time.dart';
-import 'package:chatapp/firebase/fire_database.dart';
 import 'package:chatapp/models/messageModel.dart';
 import 'package:chatapp/models/userModel.dart';
 import 'package:chatapp/screens/chats/widgets/chatBubbleRecieve.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../services/firebase/fire_database.dart';
 import '../widgets/chat_room_title.dart';
 import '../widgets/gif_hey.dart';
 import '../widgets/message_textfield.dart';

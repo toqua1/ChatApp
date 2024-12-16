@@ -1,6 +1,6 @@
 import 'package:chatapp/models/group_model.dart';
 import 'package:flutter/material.dart';
-import '../../../firebase/fire_database.dart';
+import '../../../services/firebase/fire_database.dart';
 
 class HeyWidget extends StatelessWidget {
   const HeyWidget({super.key, required this.groupChat});
