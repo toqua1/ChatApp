@@ -86,7 +86,7 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                                     .remove(userList[index].id);
                               });
                           }):
-                          FireData().promptAdmin(
+                          FireData().promoteAdmin(
                               widget.chatGroup.id,
                               userList[index].id!
                           ).then((value){

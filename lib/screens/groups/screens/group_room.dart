@@ -221,8 +221,11 @@ class _GroupRoomState extends State<GroupRoom> {
                   onPressed: () {
                     if (msgController.text.isNotEmpty) {
                       FireData()
-                          .sendGMessage(msgController.text, widget.chatGroup.id,
-                              widget.chatGroup, context)
+                          .sendGMessage(
+                              messageContent: msgController.text,
+                              groupId: widget.chatGroup.id,
+                              groupChat: widget.chatGroup,
+                              context: context)
                           .then((value) => msgController.text = '');
                       _controller.animateTo(
                         _controller.position.maxScrollExtent,
